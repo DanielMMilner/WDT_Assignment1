@@ -19,29 +19,30 @@ namespace WDT_Assignment1
             };
         }
 
-        public override void ProcessMenu(string input)
+        public override bool ProcessMenu(string input)
         {
             switch (input)
             {
-                case "1":
+                case "1":   //List Rooms
                     var rooms = model.GetRooms();
                     view.ListRooms(rooms);
-                    break;
-                case "2":
+                    return false;
+                case "2":   //List Slots
                     var slots = model.GetSlots();
                     view.ListSlots(slots);
-                    break;
-                case "3":
-                    controller.ChangeCurrentMenu("Staff");       //change to staff menu
-                    break;
-                case "4":
-                    controller.ChangeCurrentMenu("Student");     //change to student menu
-                    break;
-                case "5":
-                    break;
+                    return false;
+                case "3":   //Staff menu
+                    controller.ChangeCurrentMenu("Staff");
+                    return false;
+                case "4":   //Student menu
+                    controller.ChangeCurrentMenu("Student");
+                    return false;
+                case "5":   //Exit
+                    view.Exit();
+                    return true;
                 default:
                     view.ErrorMessage("Invalid Input");
-                    break;
+                    return false;
             }
         }
     }

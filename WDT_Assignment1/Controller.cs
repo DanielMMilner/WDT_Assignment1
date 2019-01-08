@@ -28,13 +28,11 @@ namespace WDT_Assignment1
 
         public void Run()
         {
-            view.PrintMenu(currentMenu.menuName, currentMenu.options);
-
             while (!exit)
             {
-                var input = Console.ReadLine();
-                currentMenu.ProcessMenu(input);
                 view.PrintMenu(currentMenu.menuName, currentMenu.options);
+                var input = Console.ReadLine();
+                exit = currentMenu.ProcessMenu(input);
             }
         }
 
@@ -48,7 +46,7 @@ namespace WDT_Assignment1
                     return;
                 }
             }
-            view.ErrorMessage();
+            view.ErrorMessage("Menu not found");
         }
     }
 }

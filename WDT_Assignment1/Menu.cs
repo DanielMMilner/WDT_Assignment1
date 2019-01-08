@@ -18,6 +18,6 @@ namespace WDT_Assignment1
             this.controller = controller;
         }
        
-        public abstract void ProcessMenu(string input);
+        public abstract bool ProcessMenu(string input);
     }
 }

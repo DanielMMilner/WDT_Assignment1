@@ -32,5 +32,10 @@ namespace WDT_Assignment1
         {
             Console.WriteLine(message);
         }
+
+        public void Exit()
+        {
+            Console.WriteLine("Now exiting...");
+        }
     }
 }

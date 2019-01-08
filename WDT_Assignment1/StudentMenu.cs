@@ -18,21 +18,22 @@ namespace WDT_Assignment1
             };
         }
 
-        public override void ProcessMenu(string input)
+        public override bool ProcessMenu(string input)
         {
             switch (input)
             {
-                case "1":
-                    break;
-                case "2":
-                    break;
-                case "3":
-                    break;
-                case "4":
-                    break;
+                case "1":   //Staff availability
+                    return false;
+                case "2":   //Make booking
+                    return false;
+                case "3":   //Cancel booking
+                    return false;
+                case "4":   //Exit
+                    view.Exit();
+                    return true;
                 default:
                     view.ErrorMessage("Invalid Input");
-                    break;
+                    return false;
             }
         }
     }
