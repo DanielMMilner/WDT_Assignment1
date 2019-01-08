@@ -7,19 +7,13 @@ namespace WDT_Assignment1
     {
         public View() { }
 
-        public void PrintMenu(List<string> menuOptions)
+        public void PrintMenu(string menuName, List<string> menuOptions)
         {
-            var optionNum = 0;
+            Console.WriteLine(menuName + " Menu:");
+            var optionNum = 1;
             foreach(string option in menuOptions)
             {
-                if (optionNum == 0)
-                {
-                    Console.WriteLine(option);
-                }
-                else
-                {
-                    Console.WriteLine("    " + optionNum + ". " + option);
-                }
+                Console.WriteLine("    " + optionNum + ". " + option);
                 optionNum++;
             }
         }
@@ -32,6 +26,11 @@ namespace WDT_Assignment1
         public void ListSlots(string slots)
         {
             Console.WriteLine(slots);
+        }
+
+        public void ErrorMessage(string message)
+        {
+            Console.WriteLine(message);
         }
     }
 }
