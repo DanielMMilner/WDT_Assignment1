@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace WDT_Assignment1
+﻿namespace WDT_Assignment1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Controller controller = new Controller();
+            controller.Run();
         }
     }
 }
