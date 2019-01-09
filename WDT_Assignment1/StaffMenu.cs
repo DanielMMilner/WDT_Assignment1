@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace WDT_Assignment1
@@ -7,9 +7,9 @@ namespace WDT_Assignment1
     {
         public StaffMenu(Model model, View view, Controller controller) : base(model, view, controller)
         {
-            menuName = "Staff";
+            MenuName = "Staff";
 
-            options = new List<string>
+            Options = new List<string>
             {
                 "List staff",
                 "Room availability",

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace WDT_Assignment1
 {
     abstract class Menu
     {
-        public string menuName;
-        public List<string> options;
+        public string MenuName { get; protected set; }
+        public List<string> Options { get; protected set; }
 
         protected Model model;
         protected View view;
