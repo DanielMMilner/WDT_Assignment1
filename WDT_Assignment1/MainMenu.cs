@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace WDT_Assignment1
@@ -32,10 +32,10 @@ namespace WDT_Assignment1
                     view.ListSlots(slots);
                     return false;
                 case "3":   //Staff menu
-                    controller.ChangeCurrentMenu("Staff");
+                    controller.ChangeCurrentMenu(new StaffMenu(model,view,controller));
                     return false;
                 case "4":   //Student menu
-                    controller.ChangeCurrentMenu("Student");
+                    controller.ChangeCurrentMenu(new StudentMenu(model, view, controller));
                     return false;
                 case "5":   //Exit
                     view.Exit();
