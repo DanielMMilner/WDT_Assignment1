@@ -5,7 +5,7 @@ namespace WDT_Assignment1
 {
     class Model
     {
-        public List<string> GetRooms()
+        public virtual List<string> GetRooms()
         {
             List<string> rooms = new List<string>();
 
