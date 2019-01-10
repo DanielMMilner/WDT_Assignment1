@@ -28,7 +28,13 @@ namespace WDT_Assignment1
                     view.ListRooms(rooms);
                     return false;
                 case "2":   //List Slots
-                    var slots = model.GetSlots();
+                    view.ShowPrompt("Enter date for slots (dd-mm-yyyy):");
+                    var date = Console.ReadLine();
+
+                    //TODO: check date format is correct
+
+                    var slots = model.GetSlots(date);
+
                     view.ListSlots(slots);
                     return false;
                 case "3":   //Staff menu

@@ -23,9 +23,19 @@ namespace WDT_Assignment1
             return rooms;
         }
 
-        public String GetSlots()
+        public List<Slot> GetSlots(string date)
         {
-            return "Slots";
+            List<Slot> slots = new List<Slot>();
+
+            //TODO: Talk to database and get the slots
+            //add the slots to the list
+            slots.Add(new Slot("room A", "1pm", "2pm", "Staff1", "-"));
+            slots.Add(new Slot("room A", "2pm", "3pm", "Staff1", "-"));
+            slots.Add(new Slot("room B", "3pm", "4pm", "Staff2", "-"));
+            slots.Add(new Slot("room B", "4pm", "5pm", "Staff2", "-"));
+            slots.Add(new Slot("room C", "1pm", "2pm", "Staff3", "-"));
+
+            return slots;
         }
 
         public List<Person> GetPersons(bool getStaffMembers)

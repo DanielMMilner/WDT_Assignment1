@@ -27,16 +27,26 @@ namespace WDT_Assignment1
             }
         }
 
-        public void ListSlots(string slots)
+        public void ListSlots(List<Slot> slots)
         {
+            //TODO: Fix formatting
             Console.WriteLine("--- List Slots ---");
             Console.WriteLine("Room name       Start time        End time       Staff ID        Bookings");
 
-            Console.WriteLine(slots);
+            foreach (Slot slot in slots)
+            {
+                Console.WriteLine(slot.RoomName + "    " + slot.StartTime + "   " + slot.EndTime + "    " + slot.StaffId + "    " + slot.Bookings);
+            }
+        }
+
+        public void ShowPrompt(string prompt)
+        {
+            Console.WriteLine(prompt);
         }
 
         public void ListPeople(bool isStaff, List<Person> people)
         {
+            //TODO: Fix formatting
             Console.WriteLine("--- List Staff ---");
             Console.WriteLine("ID       Name        Email");
             foreach(Person p in people)
