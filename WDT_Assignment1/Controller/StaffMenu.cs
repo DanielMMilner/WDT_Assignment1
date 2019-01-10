@@ -24,6 +24,8 @@ namespace WDT_Assignment1
             switch (input)
             {
                 case "1":   //List staff
+                    var staff = model.GetPersons(true);
+                    view.ListPeople(true, staff);
                     return false;
                 case "2":   //Room availability
                     return false;

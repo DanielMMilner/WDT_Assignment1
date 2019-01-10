@@ -11,6 +11,7 @@ namespace WDT_Assignment1
 
             Options = new List<string>
             {
+                "List students",
                 "Staff availability",
                 "Make booking",
                 "Cancel booking",
@@ -22,13 +23,17 @@ namespace WDT_Assignment1
         {
             switch (input)
             {
-                case "1":   //Staff availability
+                case "1":   //List students
+                    var students = model.GetPersons(false);
+                    view.ListPeople(false, students);
                     return false;
-                case "2":   //Make booking
+                case "2":   //Staff availability
                     return false;
-                case "3":   //Cancel booking
+                case "3":   //Make booking
                     return false;
-                case "4":   //Exit
+                case "4":   //Cancel booking
+                    return false;
+                case "5":   //Exit
                     view.Exit();
                     return true;
                 default:
