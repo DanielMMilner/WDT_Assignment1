@@ -24,18 +24,10 @@ namespace WDT_Assignment1
             switch (input)
             {
                 case "1":   //List Rooms
-                    var rooms = model.GetRooms();
-                    view.ListRooms(rooms);
+                    ListRooms();
                     return false;
                 case "2":   //List Slots
-                    view.ShowPrompt("Enter date for slots (dd-mm-yyyy):");
-                    var date = Console.ReadLine();
-
-                    //TODO: check date format is correct
-
-                    var slots = model.GetSlots(date);
-
-                    view.ListSlots(slots);
+                    ListSlots();
                     return false;
                 case "3":   //Staff menu
                     controller.ChangeCurrentMenu(new StaffMenu(model,view,controller));
@@ -50,6 +42,24 @@ namespace WDT_Assignment1
                     view.ErrorMessage("Invalid Input");
                     return false;
             }
+        }
+
+        private void ListRooms()
+        {
+            var rooms = model.GetRooms();
+            view.ListRooms(rooms);
+        }
+
+        private void ListSlots()
+        {
+            view.ShowPrompt("Enter date for slots (dd-mm-yyyy):");
+            var date = Console.ReadLine();
+
+            //TODO: check date format is correct
+
+            var slots = model.GetSlots(date);
+
+            view.ListSlots(slots);
         }
     }
 }

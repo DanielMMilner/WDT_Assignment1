@@ -24,58 +24,16 @@ namespace WDT_Assignment1
             switch (input)
             {
                 case "1":   //List staff
-                    var staff = model.GetPersons(true);
-                    view.ListPeople(true, staff);
+                    ListStaff();
                     return false;
                 case "2":   //Room availability
-                    view.ShowPrompt("Enter date for room availability (dd-mm-yyyy):");
-                    var date = Console.ReadLine();
-                    //TODO: check date format is correct
-
-                    var rooms = model.GetRoomsOnDate(date);
-
-                    view.ListRooms(rooms);
-
+                    RoomAvailability();
                     return false;
                 case "3":   //Create slot
-                    view.ShowPrompt("Enter room name:");
-                    var roomName = Console.ReadLine();
-                    view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
-                    var bookingDate = Console.ReadLine();
-                    view.ShowPrompt("Enter time for slot (hh:mm):");
-                    var time = Console.ReadLine();
-                    view.ShowPrompt("Enter staff ID:");
-                    var iD = Console.ReadLine();
-
-                    bool success = model.CreateSlot(roomName, bookingDate, time, iD);
-
-                    if (success)
-                    {
-                        view.ShowPrompt("Slot created successfully");
-                    }
-                    else
-                    {
-                        view.ShowPrompt("Failed to create slot");
-                    }
+                    CreateSlot();
                     return false;
                 case "4":   //Remove slot
-                    view.ShowPrompt("Enter room name:");
-                    var roomNameRemove = Console.ReadLine();
-                    view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
-                    var bookingDateRemove = Console.ReadLine();
-                    view.ShowPrompt("Enter time for slot (hh:mm):");
-                    var timeRemove = Console.ReadLine();
-
-                    bool suc = model.RemoveSlot(roomNameRemove, bookingDateRemove, timeRemove);
-
-                    if (suc)
-                    {
-                        view.ShowPrompt("Slot removed successfully");
-                    }
-                    else
-                    {
-                        view.ShowPrompt("Failed to remove slot");
-                    }
+                    RemoveSlot();
                     return false;
                 case "5":   //Return to Main Menu
                     controller.ChangeCurrentMenu(new MainMenu(model, view, controller));
@@ -83,6 +41,67 @@ namespace WDT_Assignment1
                 default:
                     view.ErrorMessage("Invalid Input");
                     return false;
+            }
+        }
+
+        private void ListStaff()
+        {
+            var staff = model.GetPersons(true);
+            view.ListPeople(true, staff);
+        }
+
+        private void RoomAvailability()
+        {
+            view.ShowPrompt("Enter date for room availability (dd-mm-yyyy):");
+            var date = Console.ReadLine();
+            //TODO: check date format is correct
+
+            var rooms = model.GetRoomsOnDate(date);
+
+            view.ListRooms(rooms);
+        }
+
+        private void CreateSlot()
+        {
+            view.ShowPrompt("Enter room name:");
+            var roomName = Console.ReadLine();
+            view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
+            var bookingDate = Console.ReadLine();
+            view.ShowPrompt("Enter time for slot (hh:mm):");
+            var time = Console.ReadLine();
+            view.ShowPrompt("Enter staff ID:");
+            var iD = Console.ReadLine();
+
+            bool success = model.CreateSlot(roomName, bookingDate, time, iD);
+
+            if (success)
+            {
+                view.ShowPrompt("Slot created successfully");
+            }
+            else
+            {
+                view.ShowPrompt("Failed to create slot");
+            }
+        }
+
+        private void RemoveSlot()
+        {
+            view.ShowPrompt("Enter room name:");
+            var roomName = Console.ReadLine();
+            view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
+            var bookingDate = Console.ReadLine();
+            view.ShowPrompt("Enter time for slot (hh:mm):");
+            var time = Console.ReadLine();
+
+            bool success = model.RemoveSlot(roomName, bookingDate, time);
+
+            if (success)
+            {
+                view.ShowPrompt("Slot removed successfully");
+            }
+            else
+            {
+                view.ShowPrompt("Failed to remove slot");
             }
         }
     }
