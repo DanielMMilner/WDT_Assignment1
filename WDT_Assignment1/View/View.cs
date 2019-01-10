@@ -18,10 +18,13 @@ namespace WDT_Assignment1
             }
         }
 
-        public void ListRooms(string rooms)
+        public void ListRooms(List<string> rooms)
         {
             Console.WriteLine("--- List Rooms ---");
-            Console.WriteLine(rooms);
+            foreach(string room in rooms)
+            {
+                Console.WriteLine(room);
+            }
         }
 
         public void ListSlots(string slots)
