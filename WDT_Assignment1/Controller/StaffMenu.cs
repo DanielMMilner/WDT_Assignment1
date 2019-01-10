@@ -28,6 +28,14 @@ namespace WDT_Assignment1
                     view.ListPeople(true, staff);
                     return false;
                 case "2":   //Room availability
+                    view.ShowPrompt("Enter date for room availability (dd-mm-yyyy):");
+                    var date = Console.ReadLine();
+                    //TODO: check date format is correct
+
+                    var rooms = model.GetRoomsOnDate(date);
+
+                    view.ListRooms(rooms);
+
                     return false;
                 case "3":   //Create slot
                     return false;

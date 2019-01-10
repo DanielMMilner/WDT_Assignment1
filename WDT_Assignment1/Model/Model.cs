@@ -5,11 +5,6 @@ namespace WDT_Assignment1
 {
     class Model
     {
-        public Model()
-        {
-            
-        }
-
         public List<string> GetRooms()
         {
             List<string> rooms = new List<string>();
@@ -36,6 +31,19 @@ namespace WDT_Assignment1
             slots.Add(new Slot("room C", "1pm", "2pm", "Staff3", "-"));
 
             return slots;
+        }
+
+        public List<string> GetRoomsOnDate(string date)
+        {
+            List<string> rooms = new List<string>();
+
+            //TODO: Talk to database and get the rooms using date
+            //add the slots to the list
+            rooms.Add("room42");
+            rooms.Add("room65");
+            rooms.Add("room86");
+
+            return rooms;
         }
 
         public List<Person> GetPersons(bool getStaffMembers)
