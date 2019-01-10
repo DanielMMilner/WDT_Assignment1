@@ -55,6 +55,17 @@ namespace WDT_Assignment1
             }
         }
 
+        public void StaffAvailability(List<StaffAvailability> staffAvailabilities)
+        {
+            //TODO: Fix formatting
+            Console.WriteLine("Room name       Start time        End time");
+
+            foreach (StaffAvailability availability in staffAvailabilities)
+            {
+                Console.WriteLine(availability.RoomName + "    " + availability.StartTime + "   " + availability.EndTime);
+            }
+        }
+
         public void ErrorMessage(string message)
         {
             Console.WriteLine(message);

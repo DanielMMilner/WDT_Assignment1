@@ -43,7 +43,7 @@ namespace WDT_Assignment1
             List<Person> people = new List<Person>();
 
             //TODO: Talk to database and get the all the staff/students
-            //conver each staff member into person object an place in list
+            //convert each staff member into person object an place in list
             if (getStaffMembers)
             {
                 //get staff
@@ -60,6 +60,21 @@ namespace WDT_Assignment1
             }
 
             return people;
+        }
+
+        public List<StaffAvailability> GetStaffAvailability(string date, string staffId)
+        {
+            List<StaffAvailability> staffAvailabilities = new List<StaffAvailability>();
+
+            //TODO: talk to database and get staff availabilities using date and staff Id
+            //place availabilities in list
+
+            staffAvailabilities.Add(new StaffAvailability("RoomA", "1pm", "2pm"));
+            staffAvailabilities.Add(new StaffAvailability("RoomB", "2pm", "3pm"));
+            staffAvailabilities.Add(new StaffAvailability("RoomC", "3pm", "5pm"));
+            staffAvailabilities.Add(new StaffAvailability("RoomD", "10pm", "12am"));
+
+            return staffAvailabilities;            
         }
     }
 }

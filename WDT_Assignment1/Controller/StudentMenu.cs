@@ -28,6 +28,19 @@ namespace WDT_Assignment1
                     view.ListPeople(false, students);
                     return false;
                 case "2":   //Staff availability
+                    view.ShowPrompt("Enter date for staff availability (dd-mm-yyyy):");
+                    var date = Console.ReadLine();
+                    //TODO: check date format is correct
+
+                    view.ShowPrompt("Enter staff ID:");
+                    var staffId = Console.ReadLine();
+                    //TODO: check staff ID format is correct
+
+                    view.ShowPrompt("Staff " + staffId + " availability on " + date);
+
+                    var availability = model.GetStaffAvailability(date, staffId);
+                    view.StaffAvailability(availability);
+
                     return false;
                 case "3":   //Make booking
                     return false;
