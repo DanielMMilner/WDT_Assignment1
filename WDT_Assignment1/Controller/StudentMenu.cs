@@ -45,9 +45,9 @@ namespace WDT_Assignment1
                 case "3":   //Make booking
                     view.ShowPrompt("Enter room name:");
                     var roomName = Console.ReadLine();
-                    view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
+                    view.ShowPrompt("Enter date for booking (dd-mm-yyyy):");
                     var bookingDate = Console.ReadLine();
-                    view.ShowPrompt("Enter time for slot (hh:mm):");
+                    view.ShowPrompt("Enter time for booking (hh:mm):");
                     var time = Console.ReadLine();
                     view.ShowPrompt("Enter student ID:");
                     var iD = Console.ReadLine();

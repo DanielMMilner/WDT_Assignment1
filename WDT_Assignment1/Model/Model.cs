@@ -70,6 +70,18 @@ namespace WDT_Assignment1
             return people;
         }
 
+        public bool CreateSlot(string roomName, string bookingDate, string time, string iD)
+        {
+            //TODO: talk to database and create a slot if possible
+            return true;
+        }
+
+        public bool RemoveSlot(string roomName, string bookingDate, string time)
+        {
+            //TODO: talk to database and remove a slot if possible
+            return true;
+        }
+
         public bool MakeBooking(string roomName, string bookingDate, string time, string iD)
         {
             //TODO: talk to database and make a booking if possible
