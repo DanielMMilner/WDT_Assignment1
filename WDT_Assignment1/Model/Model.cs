@@ -70,6 +70,18 @@ namespace WDT_Assignment1
             return people;
         }
 
+        public bool MakeBooking(string roomName, string bookingDate, string time, string iD)
+        {
+            //TODO: talk to database and make a booking if possible
+            return true;
+        }
+
+        public bool CancelBooking(string roomName, string bookingDate, string time)
+        {
+            //TODO: talk to database and cancel a booking if possible
+            return true;
+        }
+
         public List<StaffAvailability> GetStaffAvailability(string date, string staffId)
         {
             List<StaffAvailability> staffAvailabilities = new List<StaffAvailability>();

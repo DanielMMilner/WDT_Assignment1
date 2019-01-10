@@ -43,8 +43,46 @@ namespace WDT_Assignment1
 
                     return false;
                 case "3":   //Make booking
+                    view.ShowPrompt("Enter room name:");
+                    var roomName = Console.ReadLine();
+                    view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
+                    var bookingDate = Console.ReadLine();
+                    view.ShowPrompt("Enter time for slot (hh:mm):");
+                    var time = Console.ReadLine();
+                    view.ShowPrompt("Enter student ID:");
+                    var iD = Console.ReadLine();
+
+
+                    bool success = model.MakeBooking(roomName, bookingDate, time, iD);
+
+                    if (success)
+                    {
+                        view.ShowPrompt("Slot booked successfully");
+                    }
+                    else
+                    {
+                        view.ShowPrompt("Slot booking failed");
+                    }
+
                     return false;
                 case "4":   //Cancel booking
+                    view.ShowPrompt("Enter room name:");
+                    var roomNameCancel = Console.ReadLine();
+                    view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
+                    var bookingDateCancel = Console.ReadLine();
+                    view.ShowPrompt("Enter time for slot (hh:mm):");
+                    var timeCancel = Console.ReadLine();
+
+                    bool s = model.CancelBooking(roomNameCancel, bookingDateCancel, timeCancel);
+
+                    if (s)
+                    {
+                        view.ShowPrompt("Slot cancelled successfully");
+                    }
+                    else
+                    {
+                        view.ShowPrompt("Could not cancel booking");
+                    }
                     return false;
                 case "5":   //Return to Main Menu
                     controller.ChangeCurrentMenu(new MainMenu(model, view, controller));
