@@ -15,7 +15,7 @@ namespace WDT_Assignment1
                 "Room availability",
                 "Create slot",
                 "Remove slot",
-                "Exit"
+                "Return to Main Menu"
             };
         }
 
@@ -33,9 +33,9 @@ namespace WDT_Assignment1
                     return false;
                 case "4":   //Remove slot
                     return false;
-                case "5":   //Exit
-                    view.Exit();
-                    return true;
+                case "5":   //Return to Main Menu
+                    controller.ChangeCurrentMenu(new MainMenu(model, view, controller));
+                    return false;
                 default:
                     view.ErrorMessage("Invalid Input");
                     return false;
