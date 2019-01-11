@@ -17,6 +17,8 @@ namespace WDT_Assignment1
         {
             Regex rx = new Regex(@"^([0-9]|[0-2][0-9]|(3)[0-1])-((1)[0-2]|[1-9]|(0)[1-9])-\d{4}$");
 
+            view.ShowPrompt("Enter date in format (dd-mm-yyyy):");
+
             while (!GetInput(rx))
             {
                 view.ShowPrompt("Invalid date format. Dates much be in the format dd-mm-yyyy");
@@ -29,6 +31,8 @@ namespace WDT_Assignment1
         public string GetTime()
         {
             Regex rx = new Regex(@"^((2)[0-3]|(0|1)[0-9]):([0-5][0-9])$");
+
+            view.ShowPrompt("Enter time in format (hh:mm):");
 
             while (!GetInput(rx))
             {
@@ -43,10 +47,12 @@ namespace WDT_Assignment1
         {
             Regex rx = new Regex(@"^(e)\d{5}$");
 
+            view.ShowPrompt("Enter staff ID:");
+
             while (!GetInput(rx))
             {
                 view.ShowPrompt("Invalid Staff ID format. Staff IDs must start with an 'e' followed by 5 numbers");
-                view.ShowPrompt("Enter a Staff ID:");
+                view.ShowPrompt("Enter a staff ID:");
             }
 
             return input;
@@ -55,6 +61,8 @@ namespace WDT_Assignment1
         public string GetStudentId()
         {
             Regex rx = new Regex(@"^(s)\d{7}$");
+
+            view.ShowPrompt("Enter student ID:");
 
             while (!GetInput(rx))
             {
@@ -67,6 +75,8 @@ namespace WDT_Assignment1
 
         public string GetRoomName()
         {
+            view.ShowPrompt("Enter room name:");
+
             return Console.ReadLine();
         }
 
