@@ -6,15 +6,10 @@ namespace WDT_Assignment1
 {
     public class Person
     {   
-        public string Id { get; private set; }
-        public string Name { get; private set; }
-        public string Email { get; private set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
 
-        public Person(string id, string name, string email)
-        {
-            Id = id;
-            Name = name;
-            Email = email;
-        }
+        public bool IsStaff { get => Id.StartsWith('e'); }
     }
 }

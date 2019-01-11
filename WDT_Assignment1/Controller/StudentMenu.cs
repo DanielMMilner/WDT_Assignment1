@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WDT_Assignment1
 {
@@ -46,7 +47,7 @@ namespace WDT_Assignment1
 
         private void ListStudents()
         {
-            var students = model.GetPersons(false);
+            var students = model.Users.Where(x => !x.IsStaff);
             view.ListPeople(false, students);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WDT_Assignment1
 {
@@ -46,20 +47,19 @@ namespace WDT_Assignment1
 
         private void ListRooms()
         {
-            var rooms = model.GetRooms();
+            var rooms = model.Rooms;
             view.ListRooms(rooms);
         }
 
         private void ListSlots()
         {
             view.ShowPrompt("Enter date for slots (dd-mm-yyyy):");
+            
             var date = Console.ReadLine();
 
             //TODO: check date format is correct
 
-            var slots = model.GetSlots(date);
-
-            view.ListSlots(slots);
+            view.ListSlots(model.Slots.Where(x => DateTime.Compare(x.StartTime, DateTime.Parse(date))>0));
         }
     }
 }

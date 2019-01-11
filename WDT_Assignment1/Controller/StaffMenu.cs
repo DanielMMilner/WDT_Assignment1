@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WDT_Assignment1
 {
@@ -46,8 +47,7 @@ namespace WDT_Assignment1
 
         private void ListStaff()
         {
-            var staff = model.GetPersons(true);
-            view.ListPeople(true, staff);
+            view.ListPeople(true, model.Users.Where(x => x.IsStaff));
         }
 
         private void RoomAvailability()

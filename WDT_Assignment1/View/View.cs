@@ -18,7 +18,7 @@ namespace WDT_Assignment1
             }
         }
 
-        public void ListRooms(List<string> rooms)
+        public void ListRooms(IEnumerable<string> rooms)
         {
             Console.WriteLine("--- List Rooms ---");
             foreach(string room in rooms)
@@ -27,15 +27,15 @@ namespace WDT_Assignment1
             }
         }
 
-        public void ListSlots(List<Slot> slots)
+        public void ListSlots(IEnumerable<Slot> slots)
         {
             //TODO: Fix formatting
             Console.WriteLine("--- List Slots ---");
-            Console.WriteLine("Room name       Start time        End time       Staff ID        Bookings");
+            Console.WriteLine("Room name       Start time        Staff ID        Student ID");
 
             foreach (Slot slot in slots)
             {
-                Console.WriteLine(slot.RoomName + "    " + slot.StartTime + "   " + slot.EndTime + "    " + slot.StaffId + "    " + slot.Bookings);
+                Console.WriteLine($"{slot.RoomName}    {slot.StartTime}    {slot.StaffId}    {slot.StudentId}");
             }
         }
 
@@ -44,7 +44,7 @@ namespace WDT_Assignment1
             Console.WriteLine(prompt);
         }
 
-        public void ListPeople(bool isStaff, List<Person> people)
+        public void ListPeople(bool isStaff, IEnumerable<Person> people)
         {
             //TODO: Fix formatting
             Console.WriteLine("--- List Staff ---");

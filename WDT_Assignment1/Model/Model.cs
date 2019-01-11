@@ -1,36 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace WDT_Assignment1
 {
     class Model
     {
-        public virtual List<string> GetRooms()
+        public List<string> Rooms { get; private set; }
+        public List<Person> Users { get; private set; }
+        public List<Slot> Slots { get; private set; }
+
+        public Model()
         {
-            List<string> rooms = new List<string>();
+            using (var conn = new SqlConnection("server=wdt2019.australiasoutheast.cloudapp.azure.com;UID=s3542686;PWD=abc123"))
+            {
+                var userAdap = new SqlDataAdapter("SELECT * FROM dbo.[User]", conn);
+                var slotAdap = new SqlDataAdapter("SELECT * FROM dbo.[Slot]", conn);
+                var roomAdap = new SqlDataAdapter("SELECT * FROM dbo.[Room]", conn);
 
-            //TODO: Talk to database and get the names of the rooms
-            //add the rooms to the list
-            rooms.Add("room1");
-            rooms.Add("room2");
-            rooms.Add("room3");
+                var userData = new DataSet();
+                var slotData = new DataSet();
+                var roomData = new DataSet();
 
-            return rooms;
-        }
+                userAdap.Fill(userData);
+                slotAdap.Fill(slotData);
+                roomAdap.Fill(roomData);
 
-        public List<Slot> GetSlots(string date)
-        {
-            List<Slot> slots = new List<Slot>();
+                Rooms = new List<string>();
+                Users = new List<Person>();
+                Slots = new List<Slot>();
 
-            //TODO: Talk to database and get the slots
-            //add the slots to the list
-            slots.Add(new Slot("room A", "1pm", "2pm", "Staff1", "-"));
-            slots.Add(new Slot("room A", "2pm", "3pm", "Staff1", "-"));
-            slots.Add(new Slot("room B", "3pm", "4pm", "Staff2", "-"));
-            slots.Add(new Slot("room B", "4pm", "5pm", "Staff2", "-"));
-            slots.Add(new Slot("room C", "1pm", "2pm", "Staff3", "-"));
+                foreach (DataRow item in userData.Tables[0].Rows)
+                {
+                    Users.Add(new Person { Id = item["UserID"].ToString(), Email = item["Email"].ToString(), Name = item["Name"].ToString() });
+                }
 
-            return slots;
+                foreach (DataRow item in roomData.Tables[0].Rows)
+                {
+                    Rooms.Add(item["RoomID"].ToString());
+                }
+
+                foreach (DataRow item in slotData.Tables[0].Rows)
+                {
+                    Slots.Add(new Slot {
+                        RoomName = item["RoomID"].ToString(),
+                        StartTime = DateTime.Parse(item["StartTime"].ToString()),
+                        StaffId = item["StaffID"].ToString(),
+                        StudentId = item["BookedInStudentID"].ToString()
+                    });
+                }
+
+                
+            }
         }
 
         public List<string> GetRoomsOnDate(string date)
@@ -44,30 +66,6 @@ namespace WDT_Assignment1
             rooms.Add("room86");
 
             return rooms;
-        }
-
-        public List<Person> GetPersons(bool getStaffMembers)
-        {
-            List<Person> people = new List<Person>();
-
-            //TODO: Talk to database and get the all the staff/students
-            //convert each staff member into person object an place in list
-            if (getStaffMembers)
-            {
-                //get staff
-                people.Add(new Person("1", "staff1", "email1"));
-                people.Add(new Person("2", "staff2", "email2"));
-                people.Add(new Person("3", "staff3", "email3"));
-            }
-            else
-            {
-                //get students
-                people.Add(new Person("1", "student1", "email1"));
-                people.Add(new Person("2", "student2", "email2"));
-                people.Add(new Person("3", "student3", "email3"));
-            }
-
-            return people;
         }
 
         public bool CreateSlot(string roomName, string bookingDate, string time, string iD)

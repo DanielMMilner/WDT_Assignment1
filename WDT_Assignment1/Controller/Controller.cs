@@ -13,7 +13,7 @@ namespace WDT_Assignment1
         public Controller()
         {
             view = new View();
-            model = new Database();
+            model = new Model();
             
             currentMenu = new MainMenu(model, view, this);
         }
