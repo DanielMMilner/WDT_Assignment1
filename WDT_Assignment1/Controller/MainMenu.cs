@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WDT_Assignment1
 {
@@ -53,10 +52,8 @@ namespace WDT_Assignment1
         private void ListSlots()
         {
             view.ShowPrompt("Enter date for slots (dd-mm-yyyy):");
-            var date = Console.ReadLine();
-
-            //TODO: check date format is correct
-
+            var date = userInput.GetDate();
+         
             var slots = model.GetSlots(date);
 
             view.ListSlots(slots);

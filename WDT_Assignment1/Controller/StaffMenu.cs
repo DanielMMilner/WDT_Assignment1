@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WDT_Assignment1
 {
@@ -53,8 +52,7 @@ namespace WDT_Assignment1
         private void RoomAvailability()
         {
             view.ShowPrompt("Enter date for room availability (dd-mm-yyyy):");
-            var date = Console.ReadLine();
-            //TODO: check date format is correct
+            var date = userInput.GetDate();
 
             var rooms = model.GetRoomsOnDate(date);
 
@@ -64,15 +62,18 @@ namespace WDT_Assignment1
         private void CreateSlot()
         {
             view.ShowPrompt("Enter room name:");
-            var roomName = Console.ReadLine();
-            view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
-            var bookingDate = Console.ReadLine();
-            view.ShowPrompt("Enter time for slot (hh:mm):");
-            var time = Console.ReadLine();
-            view.ShowPrompt("Enter staff ID:");
-            var iD = Console.ReadLine();
+            var roomName = userInput.GetRoomName();
 
-            bool success = model.CreateSlot(roomName, bookingDate, time, iD);
+            view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
+            var bookingDate = userInput.GetDate();
+
+            view.ShowPrompt("Enter time for slot (hh:mm):");
+            var time = userInput.GetTime();
+
+            view.ShowPrompt("Enter staff ID:");
+            var id = userInput.GetStaffId();
+
+            bool success = model.CreateSlot(roomName, bookingDate, time, id);
 
             if (success)
             {
@@ -87,11 +88,13 @@ namespace WDT_Assignment1
         private void RemoveSlot()
         {
             view.ShowPrompt("Enter room name:");
-            var roomName = Console.ReadLine();
+            var roomName = userInput.GetRoomName();
+
             view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
-            var bookingDate = Console.ReadLine();
+            var bookingDate = userInput.GetDate();
+
             view.ShowPrompt("Enter time for slot (hh:mm):");
-            var time = Console.ReadLine();
+            var time = userInput.GetTime();
 
             bool success = model.RemoveSlot(roomName, bookingDate, time);
 

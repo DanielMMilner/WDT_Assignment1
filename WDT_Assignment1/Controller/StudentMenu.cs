@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WDT_Assignment1
 {
@@ -53,14 +52,12 @@ namespace WDT_Assignment1
         private void StaffAvailability()
         {
             view.ShowPrompt("Enter date for staff availability (dd-mm-yyyy):");
-            var date = Console.ReadLine();
-            //TODO: check date format is correct
+            var date = userInput.GetDate();
 
             view.ShowPrompt("Enter staff ID:");
-            var staffId = Console.ReadLine();
-            //TODO: check staff ID format is correct
+            var staffId = userInput.GetStaffId();
 
-            view.ShowPrompt("Staff " + staffId + " availability on " + date);
+            view.ShowPrompt($"Staff {staffId} availability on {date}");
 
             var availability = model.GetStaffAvailability(date, staffId);
             view.StaffAvailability(availability);
@@ -69,16 +66,18 @@ namespace WDT_Assignment1
         private void MakeBooking()
         {
             view.ShowPrompt("Enter room name:");
-            var roomName = Console.ReadLine();
+            var roomName = userInput.GetRoomName();
+
             view.ShowPrompt("Enter date for booking (dd-mm-yyyy):");
-            var bookingDate = Console.ReadLine();
+            var bookingDate = userInput.GetDate();
+
             view.ShowPrompt("Enter time for booking (hh:mm):");
-            var time = Console.ReadLine();
+            var time = userInput.GetTime();
+
             view.ShowPrompt("Enter student ID:");
-            var iD = Console.ReadLine();
+            var id = userInput.GetStudentId();
 
-
-            bool success = model.MakeBooking(roomName, bookingDate, time, iD);
+            bool success = model.MakeBooking(roomName, bookingDate, time, id);
 
             if (success)
             {
@@ -93,11 +92,13 @@ namespace WDT_Assignment1
         private void CancelBooking()
         {
             view.ShowPrompt("Enter room name:");
-            var roomName = Console.ReadLine();
+            var roomName = userInput.GetRoomName();
+
             view.ShowPrompt("Enter date for slot (dd-mm-yyyy):");
-            var bookingDate = Console.ReadLine();
+            var bookingDate = userInput.GetDate();
+
             view.ShowPrompt("Enter time for slot (hh:mm):");
-            var time = Console.ReadLine();
+            var time = userInput.GetTime();
 
             bool success = model.CancelBooking(roomName, bookingDate, time);
 
