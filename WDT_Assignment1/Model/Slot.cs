@@ -8,5 +8,6 @@ namespace WDT_Assignment1
         public string StaffId { get; set; }
         public string StudentId { get; set; }
         public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
     }
 }

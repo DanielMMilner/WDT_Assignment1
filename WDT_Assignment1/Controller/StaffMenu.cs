@@ -54,9 +54,11 @@ namespace WDT_Assignment1
         {
             var date = userInput.GetDate();
 
-            var rooms = model.GetRoomsOnDate(date);
-
-            view.ListRooms(rooms);
+            // Get the rooms booked for the entered date.
+            var bookedRooms = model.GetBookingsOnDate(date).Select(x => x.RoomName);
+            
+            // Print all the rooms except the booked one
+            view.ListRooms(model.Rooms.Except(bookedRooms));
         }
 
         private void CreateSlot()
@@ -69,7 +71,7 @@ namespace WDT_Assignment1
 
             var id = userInput.GetStaffId();
 
-            bool success = model.CreateSlot(roomName, bookingDate, time, id);
+            bool success = model.CreateSlot(roomName, bookingDate, id);
 
             if (success)
             {
@@ -89,7 +91,7 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
-            bool success = model.RemoveSlot(roomName, bookingDate, time);
+            bool success = model.RemoveSlot(roomName, bookingDate);
 
             if (success)
             {

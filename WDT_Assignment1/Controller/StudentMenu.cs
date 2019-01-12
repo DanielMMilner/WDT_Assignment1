@@ -59,8 +59,10 @@ namespace WDT_Assignment1
 
             view.ShowPrompt($"Staff member {staffId} availability on {date}");
 
-            var availability = model.GetStaffAvailability(date, staffId);
-            view.StaffAvailability(availability);
+            // Get this staff members bookings for the given day
+            var staffBookingTimes = model.GetBookingsOnDate(date).Where(x => x.StaffId == staffId);
+            
+            view.StaffAvailability(staffBookingTimes);
         }
 
         private void MakeBooking()
@@ -73,7 +75,7 @@ namespace WDT_Assignment1
 
             var id = userInput.GetStudentId();
 
-            bool success = model.MakeBooking(roomName, bookingDate, time, id);
+            bool success = model.MakeBooking(roomName, bookingDate, id);
 
             if (success)
             {
@@ -93,7 +95,7 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
-            bool success = model.CancelBooking(roomName, bookingDate, time);
+            bool success = model.CancelBooking(roomName, bookingDate);
 
             if (success)
             {

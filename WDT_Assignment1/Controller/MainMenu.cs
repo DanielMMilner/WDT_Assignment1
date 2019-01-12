@@ -54,8 +54,8 @@ namespace WDT_Assignment1
         private void ListSlots()
         {
             var date = userInput.GetDate();
-         
-            var slots = model.GetSlots(date);
+
+            var slots = model.Slots;
 
             view.ListSlots(slots);
         }

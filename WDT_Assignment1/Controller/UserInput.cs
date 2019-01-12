@@ -13,7 +13,7 @@ namespace WDT_Assignment1
             this.view = view;
         }
 
-        public string GetDate()
+        public DateTime GetDate()
         {
             Regex rx = new Regex(@"^([0-9]|[0-2][0-9]|(3)[0-1])-((1)[0-2]|[1-9]|(0)[1-9])-\d{4}$");
 
@@ -25,7 +25,7 @@ namespace WDT_Assignment1
                 view.ShowPrompt("Enter a date:");
             }
 
-            return input;
+            return DateTime.Parse(input);
         }
 
         public string GetTime()

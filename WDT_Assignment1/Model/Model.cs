@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace WDT_Assignment1
 {
@@ -10,9 +11,10 @@ namespace WDT_Assignment1
         public List<string> Rooms { get; private set; }
         public List<Person> Users { get; private set; }
         public List<Slot> Slots { get; private set; }
-
+        
         public Model()
         {
+            // Connect to the sql database and load all tables into memory
             using (var conn = new SqlConnection("server=wdt2019.australiasoutheast.cloudapp.azure.com;UID=s3542686;PWD=abc123"))
             {
                 var userAdap = new SqlDataAdapter("SELECT * FROM dbo.[User]", conn);
@@ -31,6 +33,7 @@ namespace WDT_Assignment1
                 Users = new List<Person>();
                 Slots = new List<Slot>();
 
+                // Convert the DataSets into normal arrays
                 foreach (DataRow item in userData.Tables[0].Rows)
                 {
                     Users.Add(new Person { Id = item["UserID"].ToString(), Email = item["Email"].ToString(), Name = item["Name"].ToString() });
@@ -46,6 +49,7 @@ namespace WDT_Assignment1
                     Slots.Add(new Slot {
                         RoomName = item["RoomID"].ToString(),
                         StartTime = DateTime.Parse(item["StartTime"].ToString()),
+                        EndTime = DateTime.Parse(item["EndTime"].ToString()),
                         StaffId = item["StaffID"].ToString(),
                         StudentId = item["BookedInStudentID"].ToString()
                     });
@@ -54,57 +58,33 @@ namespace WDT_Assignment1
                 
             }
         }
-
-        public List<string> GetRoomsOnDate(string date)
+        public IEnumerable<Slot> GetBookingsOnDate(DateTime date)
         {
-            List<string> rooms = new List<string>();
-
-            //TODO: Talk to database and get the rooms using date
-            //add the slots to the list
-            rooms.Add("room42");
-            rooms.Add("room65");
-            rooms.Add("room86");
-
-            return rooms;
+            return Slots.Where(x => x.StartTime.Date == date.Date);
         }
 
-        public bool CreateSlot(string roomName, string bookingDate, string time, string iD)
+        public bool CreateSlot(string roomName, DateTime bookingDate, string iD)
         {
             //TODO: talk to database and create a slot if possible
             return true;
         }
 
-        public bool RemoveSlot(string roomName, string bookingDate, string time)
+        public bool RemoveSlot(string roomName, DateTime bookingDate)
         {
             //TODO: talk to database and remove a slot if possible
             return true;
         }
 
-        public bool MakeBooking(string roomName, string bookingDate, string time, string iD)
+        public bool MakeBooking(string roomName, DateTime bookingDate, string iD)
         {
             //TODO: talk to database and make a booking if possible
             return true;
         }
 
-        public bool CancelBooking(string roomName, string bookingDate, string time)
+        public bool CancelBooking(string roomName, DateTime bookingDate)
         {
             //TODO: talk to database and cancel a booking if possible
             return true;
-        }
-
-        public List<StaffAvailability> GetStaffAvailability(string date, string staffId)
-        {
-            List<StaffAvailability> staffAvailabilities = new List<StaffAvailability>();
-
-            //TODO: talk to database and get staff availabilities using date and staff Id
-            //place availabilities in list
-
-            staffAvailabilities.Add(new StaffAvailability("RoomA", "1pm", "2pm"));
-            staffAvailabilities.Add(new StaffAvailability("RoomB", "2pm", "3pm"));
-            staffAvailabilities.Add(new StaffAvailability("RoomC", "3pm", "5pm"));
-            staffAvailabilities.Add(new StaffAvailability("RoomD", "10pm", "12am"));
-
-            return staffAvailabilities;            
         }
     }
 }

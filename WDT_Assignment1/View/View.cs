@@ -21,21 +21,20 @@ namespace WDT_Assignment1
         public void ListRooms(IEnumerable<string> rooms)
         {
             Console.WriteLine("--- List Rooms ---");
-            foreach(string room in rooms)
+            foreach (string room in rooms)
             {
-                Console.WriteLine(room);
+                Console.WriteLine($"\t{room}");
             }
         }
 
         public void ListSlots(IEnumerable<Slot> slots)
         {
-            //TODO: Fix formatting
             Console.WriteLine("--- List Slots ---");
-            Console.WriteLine("Room name       Start time        Staff ID        Student ID");
+            Console.WriteLine("\tRoom name\tStart time\tStaff ID\tStudent ID");
 
             foreach (Slot slot in slots)
             {
-                Console.WriteLine($"{slot.RoomName}    {slot.StartTime}    {slot.StaffId}    {slot.StudentId}");
+                Console.WriteLine($"\t{slot.RoomName, -15}\t{slot.StartTime.ToString("hh:mm tt"),-15}\t{slot.StaffId, -15}\t{slot.StudentId,-15}");
             }
         }
 
@@ -48,22 +47,26 @@ namespace WDT_Assignment1
         {
             //TODO: Fix formatting
             Console.WriteLine("--- List Staff ---");
-            Console.WriteLine("ID       Name        Email");
+            Console.WriteLine("\tID\t\tName\t\tEmail");
             foreach(Person p in people)
             {
-                Console.WriteLine(p.Id + "      " + p.Name + "      " + p.Email);
+                Console.WriteLine($"\t{p.Id}\t\t{p.Name}\t\t{p.Email}");
             }
         }
 
-        public void StaffAvailability(List<StaffAvailability> staffAvailabilities)
+        public void StaffAvailability(IEnumerable<Slot> staffAvailabilities)
         {
-            //TODO: Fix formatting
-            Console.WriteLine("Room name       Start time        End time");
+            Console.WriteLine("\tRoom name\tStart time\tEnd time");
 
-            foreach (StaffAvailability availability in staffAvailabilities)
+            foreach (Slot availability in staffAvailabilities)
             {
-                Console.WriteLine(availability.RoomName + "    " + availability.StartTime + "   " + availability.EndTime);
+                Console.WriteLine($"\t{availability.RoomName,-10}\t{availability.StartTime.ToString("hh:mm tt")}\t{availability.EndTime.ToString("hh:mm tt")}");
             }
+        }
+
+        public void ErrorMessage(string msg)
+        {
+
         }
     }
 }
