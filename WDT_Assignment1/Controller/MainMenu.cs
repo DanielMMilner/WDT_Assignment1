@@ -37,10 +37,10 @@ namespace WDT_Assignment1
                     controller.ChangeCurrentMenu(new StudentMenu(model, view, controller));
                     return false;
                 case "5":   //Exit
-                    view.Exit();
+                    view.ShowPrompt("Now exiting...");
                     return true;
                 default:
-                    view.ErrorMessage("Invalid Input");
+                    view.ShowPrompt("Invalid Input");
                     return false;
             }
         }
@@ -53,13 +53,11 @@ namespace WDT_Assignment1
 
         private void ListSlots()
         {
-            view.ShowPrompt("Enter date for slots (dd-mm-yyyy):");
-            
-            var date = Console.ReadLine();
+            var date = userInput.GetDate();
+         
+            var slots = model.GetSlots(date);
 
-            //TODO: check date format is correct
-
-            view.ListSlots(model.Slots.Where(x => DateTime.Compare(x.StartTime, DateTime.Parse(date))>0));
+            view.ListSlots(slots);
         }
     }
 }
