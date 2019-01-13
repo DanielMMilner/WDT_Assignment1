@@ -13,12 +13,17 @@ namespace WDT_Assignment1
         {
             view = new View();
             model = new Model();
-            
+
             currentMenu = new MainMenu(model, view, this);
         }
 
         public void Run()
         {
+            if (!model.LoadDataFromDB())
+            {
+                view.ErrorMessage("There was a problem connecting to the database.\n Please check your internet connection and try again.");
+            }
+
             while (!exit)
             {
                 view.PrintMenu(currentMenu.MenuName, currentMenu.Options);

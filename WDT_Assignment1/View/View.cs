@@ -9,11 +9,11 @@ namespace WDT_Assignment1
 
         public void PrintMenu(string menuName, List<string> menuOptions)
         {
-            Console.WriteLine(menuName + " Menu:");
+            Console.WriteLine($"{menuName} Menu:");
             var optionNum = 1;
             foreach(string option in menuOptions)
             {
-                Console.WriteLine("    " + optionNum + ". " + option);
+                Console.WriteLine($"    {optionNum}.  {option}");
                 optionNum++;
             }
         }
@@ -66,7 +66,7 @@ namespace WDT_Assignment1
 
         public void ErrorMessage(string msg)
         {
-
+            Console.WriteLine($"An error has occured:\n{msg}");
         }
     }
 }

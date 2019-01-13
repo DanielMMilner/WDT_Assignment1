@@ -53,12 +53,8 @@ namespace WDT_Assignment1
         private void RoomAvailability()
         {
             var date = userInput.GetDate();
-
-            // Get the rooms booked for the entered date.
-            var bookedRooms = model.GetBookingsOnDate(date).Select(x => x.RoomName);
             
-            // Print all the rooms except the booked one
-            view.ListRooms(model.Rooms.Except(bookedRooms));
+            view.ListRooms(model.GetAvaliableRooms(date));
         }
 
         private void CreateSlot()
