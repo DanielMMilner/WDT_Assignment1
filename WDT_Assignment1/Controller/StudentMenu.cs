@@ -47,8 +47,7 @@ namespace WDT_Assignment1
 
         private void ListStudents()
         {
-            var students = model.Users.Where(x => !x.IsStaff);
-            view.ListPeople(false, students);
+            view.ListPeople(false, model.GetStudents());
         }
 
         private void StaffAvailability()
@@ -60,7 +59,7 @@ namespace WDT_Assignment1
             view.ShowPrompt($"Staff member {staffId} availability on {date}");
 
             // Get this staff members bookings for the given day
-            var staffBookingTimes = model.GetBookingsOnDate(date).Where(x => x.StaffId == staffId);
+            var staffBookingTimes = model.GetSlotsOnDate(date).Where(x => x.StaffId == staffId).ToList();
             
             view.StaffAvailability(staffBookingTimes);
         }
@@ -74,6 +73,8 @@ namespace WDT_Assignment1
             var time = userInput.GetTime();
 
             var id = userInput.GetStudentId();
+
+            bookingDate = bookingDate.Date + time;
 
             bool success = model.MakeBooking(roomName, bookingDate, id);
 

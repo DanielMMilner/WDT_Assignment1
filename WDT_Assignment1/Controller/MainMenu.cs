@@ -47,17 +47,14 @@ namespace WDT_Assignment1
 
         private void ListRooms()
         {
-            var rooms = model.Rooms;
-            view.ListRooms(rooms);
+            view.ListRooms(model.Rooms);
         }
 
         private void ListSlots()
         {
             var date = userInput.GetDate();
-
-            var slots = model.Slots;
-
-            view.ListSlots(slots);
+            
+            view.ListSlots(model.GetSlotsOnDate(date));
         }
     }
 }

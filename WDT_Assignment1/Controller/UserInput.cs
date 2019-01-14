@@ -28,7 +28,7 @@ namespace WDT_Assignment1
             return DateTime.Parse(input);
         }
 
-        public string GetTime()
+        public TimeSpan GetTime()
         {
             Regex rx = new Regex(@"^((2)[0-3]|(0|1)[0-9]):([0-5][0-9])$");
 
@@ -40,7 +40,7 @@ namespace WDT_Assignment1
                 view.ShowPrompt("Enter a time:");
             }
 
-            return input;
+            return TimeSpan.Parse(input);
         }
 
         public string GetStaffId()

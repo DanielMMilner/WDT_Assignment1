@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 
 namespace WDT_Assignment1
@@ -18,7 +19,7 @@ namespace WDT_Assignment1
             }
         }
 
-        public void ListRooms(IEnumerable<string> rooms)
+        public void ListRooms(List<string> rooms)
         {
             Console.WriteLine("--- List Rooms ---");
             foreach (string room in rooms)
@@ -27,7 +28,7 @@ namespace WDT_Assignment1
             }
         }
 
-        public void ListSlots(IEnumerable<Slot> slots)
+        public void ListSlots(List<Slot> slots)
         {
             Console.WriteLine("--- List Slots ---");
             Console.WriteLine("\tRoom name\tStart time\tStaff ID\tStudent ID");
@@ -43,7 +44,7 @@ namespace WDT_Assignment1
             Console.WriteLine(prompt);
         }
 
-        public void ListPeople(bool isStaff, IEnumerable<Person> people)
+        public void ListPeople(bool isStaff, List<Person> people)
         {
             //TODO: Fix formatting
             Console.WriteLine("--- List Staff ---");
@@ -54,13 +55,14 @@ namespace WDT_Assignment1
             }
         }
 
-        public void StaffAvailability(IEnumerable<Slot> staffAvailabilities)
+        public void StaffAvailability(List<Slot> staffAvailabilities)
         {
             Console.WriteLine("\tRoom name\tStart time\tEnd time");
 
             foreach (Slot availability in staffAvailabilities)
             {
-                Console.WriteLine($"\t{availability.RoomName,-10}\t{availability.StartTime.ToString("hh:mm tt")}\t{availability.EndTime.ToString("hh:mm tt")}");
+                Console.WriteLine($"\t{availability.RoomName,-10}\t{availability.StartTime.ToString("hh:mm tt")}" +
+                    $"\t{availability.StartTime.AddHours(1).ToString("hh:mm tt")}");
             }
         }
 

@@ -47,7 +47,7 @@ namespace WDT_Assignment1
 
         private void ListStaff()
         {
-            view.ListPeople(true, model.Users.Where(x => x.IsStaff));
+            view.ListPeople(true, model.GetStaff());
         }
 
         private void RoomAvailability()
@@ -65,13 +65,16 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
+            // Join the booking date with the time enterd to form a new datetime
+            bookingDate = bookingDate.Date + time;
+
             var id = userInput.GetStaffId();
 
             bool success = model.CreateSlot(roomName, bookingDate, id);
 
             if (success)
             {
-                view.ShowPrompt($"Slot in room {roomName} on {bookingDate} at {time} with {id} successfully created.");
+                view.ShowPrompt($"Slot in room {roomName} on {bookingDate.ToString("dd-MM-yyyy")} at {bookingDate.ToString("hh:mm tt")} with {id} successfully created.");
             }
             else
             {
@@ -87,11 +90,14 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
+            // Join the booking date with the time enterd to form a new datetime
+            bookingDate = bookingDate.Date + time;
+            
             bool success = model.RemoveSlot(roomName, bookingDate);
 
             if (success)
             {
-                view.ShowPrompt($"Slot in room {roomName} on {bookingDate} at {time} successfully removed.");
+                view.ShowPrompt($"Slot in room {roomName} on {bookingDate.ToString("dd-MM-yyyy")} at {bookingDate.ToString("hh:mm tt")} successfully removed.");
             }
             else
             {

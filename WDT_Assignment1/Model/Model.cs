@@ -11,7 +11,7 @@ namespace WDT_Assignment1
         public List<string> Rooms { get; private set; }
         public List<Person> Users { get; private set; }
         public List<Slot> Slots { get; private set; }
-
+        
         public static string ConnString = "server=wdt2019.australiasoutheast.cloudapp.azure.com;UID=s3542686;PWD=abc123";
 
         public Model()
@@ -51,7 +51,6 @@ namespace WDT_Assignment1
                     Slots.Add(new Slot {
                         RoomName = item["RoomID"].ToString(),
                         StartTime = DateTime.Parse(item["StartTime"].ToString()),
-                        EndTime = DateTime.Parse(item["EndTime"].ToString()),
                         StaffId = item["StaffID"].ToString(),
                         StudentId = item["BookedInStudentID"].ToString()
                     });
@@ -59,65 +58,6 @@ namespace WDT_Assignment1
 
                 
             }
-        }
-
-        public bool LoadDataFromDB()
-        {
-            return true;
-        }
-
-        public IEnumerable<string> GetAvaliableRooms(DateTime date)
-        {
-            return Rooms.Except(GetBookingsOnDate(date).Select(x => x.RoomName));
-        }
-
-        public IEnumerable<Slot> GetBookingsOnDate(DateTime date)
-        {
-            return Slots.Where(x => x.StartTime.Date == date.Date);
-        }
-
-        public bool CreateSlot(string roomName, DateTime bookingDate, string iD)
-        {
-            // Check slot does not already exist
-            if (Slots.Any(x => x.StartTime.Date == bookingDate.Date))
-            {
-                return false;
-            }
-
-            // Check room is exists.
-            if (!Rooms.Contains(roomName))
-            {
-                return false;
-            }
-           
-            // Check booking date is valid
-            if (!Slots.Any(x => x.StartTime.Date == bookingDate.Date))
-            {
-                return false;
-            }
-
-            // Check id exists
-            if (!Users.Any(x => x.Id == iD))
-            {
-                return false;
-            }
-            
-            // Create a slot
-            var newSlot = new Slot { RoomName = roomName, StartTime = bookingDate, EndTime = bookingDate.AddHours(1), StaffId = iD };
-
-            bool res = ExecuteSql("INSERT INTO [dbo].[Slot] ([RoomID], [StartTime], [EndTime], [StaffID])" +
-                    "VALUES(" +
-                    $"(SELECT RoomID from [Room] where RoomID = '{newSlot.RoomName}')," +
-                    $"'{newSlot.StartTime.ToString("yyyy-MM-dd HH:mm:ss")}'," +
-                    $"'{newSlot.EndTime.ToString("yyyy-MM-dd HH:mm:ss")}'," +
-                    $"(SELECT UserID from [User] where UserID = '{newSlot.StaffId}'))");
-
-            if(res)
-            {
-                Slots.Add(newSlot);
-                return true;
-            }
-            return false;
         }
 
         private bool ExecuteSql(string str)
@@ -140,16 +80,132 @@ namespace WDT_Assignment1
             return false;
         }
 
+        public bool LoadDataFromDB()
+        {
+            return true;
+        }
+
+
+        /// <summary>
+        /// Find the first slot that matches the given roomname and bookingdate
+        /// </summary>
+        /// <param name="roomName"></param>
+        /// <param name="bookingDate"></param>
+        /// <returns>The found Slot, Null if not found</returns>
+        public Slot FindSlot(string roomName, DateTime bookingDate)
+        {
+            return Slots.Find(x => x.StartTime == bookingDate && x.RoomName == roomName);
+        }
+
+
+        public List<string> GetAvaliableRooms(DateTime date)
+        {
+            return Rooms.Except(GetSlotsOnDate(date).Select(x => x.RoomName)).ToList();
+        }
+
+        public List<Person> GetStaff()
+        {
+            return Users.Where(x => x.IsStaff).ToList();
+        }
+
+        public List<Person> GetStudents()
+        {
+            return Users.Where(x => !x.IsStaff).ToList();
+        }
+
+        public List<Slot> GetSlotsOnDate(DateTime date)
+        {
+            return Slots.Where(x => x.StartTime.Date == date.Date).ToList();
+        }
+
+        public bool CreateSlot(string roomName, DateTime bookingDate, string iD)
+        {
+            // Check slot does not already exist
+            if (Slots.Any(x => x.StartTime == bookingDate))
+            {
+                return false;
+            }
+
+            // Check room is exists.
+            if (!Rooms.Contains(roomName))
+            {
+                return false;
+            }
+
+            // Check id exists
+            if (!Users.Any(x => x.Id == iD))
+            {
+                return false;
+            }
+            
+            // Create a slot
+            var newSlot = new Slot { RoomName = roomName, StartTime = bookingDate, StaffId = iD };
+
+            bool res = ExecuteSql("INSERT INTO [dbo].[Slot] ([RoomID], [StartTime], [StaffID])" +
+                    "VALUES(" +
+                    $"(SELECT RoomID from [Room] where RoomID = '{newSlot.RoomName}')," +
+                    $"'{newSlot.StartTime.ToString("yyyy-MM-dd HH:mm:ss")}'," +
+                    $"(SELECT UserID from [User] where UserID = '{newSlot.StaffId}'))");
+
+            if(res)
+            {
+                Slots.Add(newSlot);
+                return true;
+            }
+            return false;
+        }
+
         public bool RemoveSlot(string roomName, DateTime bookingDate)
         {
+            // Check if the slot exists
+            var slot = FindSlot(roomName, bookingDate);
+
+            // If the slot does not exist we cannot remove it
+            if(slot == null)
+            {
+                return false;
+            }
+
+            
+
             //TODO: talk to database and remove a slot if possible
             return true;
         }
 
         public bool MakeBooking(string roomName, DateTime bookingDate, string iD)
         {
-            //TODO: talk to database and make a booking if possible
-            return true;
+            // Check that the room exists
+            if(!Rooms.Contains(roomName))
+            {
+                return false;
+            }
+
+            // Check that the id exists
+            if(!Users.Any(x => x.Id == iD))
+            {
+                return false;
+            }
+
+            var slot = FindSlot(roomName, bookingDate);
+            // Check the slot exists
+            if (slot == null)
+            {
+                return false;
+            }
+                        
+            var res = ExecuteSql("UPDATE [dbo].[Slot] SET " +
+                $"[BookedInStudentID] = (SELECT [User].[UserID] FROM [User] WHERE UserID = '{iD}') " +
+                $"WHERE [RoomID] = '{roomName}' AND " +
+                $"[StartTime] = '{bookingDate.ToString("yyyy-MM-dd hh:mm:ss")}'");
+
+            // If the sql executes, update the local
+            if(res)
+            {
+                slot.StudentId = iD;
+                return true;
+            }
+            
+            return false;
         }
 
         public bool CancelBooking(string roomName, DateTime bookingDate)
