@@ -6,6 +6,12 @@ using System.Linq;
 
 namespace WDT_Assignment1
 {
+    class Result
+    {
+        public bool Success { get; set; }
+        public string ErrorMsg { get; set; }
+    }
+
     class Model
     {
         public List<string> Rooms { get; private set; }
@@ -13,6 +19,7 @@ namespace WDT_Assignment1
         public List<Slot> Slots { get; private set; }
         
         public static string ConnString = "server=wdt2019.australiasoutheast.cloudapp.azure.com;UID=s3542686;PWD=abc123";
+        public static string SQLDateTimeFormat = "yyyy-MM-dd hh:mm:ss";
 
         public Model()
         {
@@ -72,6 +79,7 @@ namespace WDT_Assignment1
                 rowsAffect = cmd.ExecuteNonQuery();
             }
 
+            // Check that the query actually did anything.
             if (rowsAffect != 0)
             {
                 return true;
@@ -94,9 +102,13 @@ namespace WDT_Assignment1
         /// <returns>The found Slot, Null if not found</returns>
         public Slot FindSlot(string roomName, DateTime bookingDate)
         {
-            return Slots.Find(x => x.StartTime == bookingDate && x.RoomName == roomName);
+            return Slots.FirstOrDefault(x => x.StartTime == bookingDate && x.RoomName == roomName);
         }
 
+        public Person FindPerson(string id)
+        {
+            return Users.FirstOrDefault(x => x.Id == id);
+        }
 
         public List<string> GetAvaliableRooms(DateTime date)
         {
@@ -118,100 +130,144 @@ namespace WDT_Assignment1
             return Slots.Where(x => x.StartTime.Date == date.Date).ToList();
         }
 
-        public bool CreateSlot(string roomName, DateTime bookingDate, string iD)
+        public Result CreateSlot(string roomName, DateTime bookingDate, string iD)
         {
-            // Check slot does not already exist
-            if (Slots.Any(x => x.StartTime == bookingDate))
-            {
-                return false;
-            }
-
             // Check room is exists.
             if (!Rooms.Contains(roomName))
             {
-                return false;
+                return new Result { Success = false, ErrorMsg = "Room does not exist" };
             }
 
+            // Check slot does not already exist
+            if (FindSlot(roomName, bookingDate) != null)
+            {
+                return new Result { Success = false, ErrorMsg = "Slot already exists" };
+            }
+            
             // Check id exists
             if (!Users.Any(x => x.Id == iD))
             {
-                return false;
+                return new Result { Success = false, ErrorMsg = "Staff member does not exist" };
             }
             
             // Create a slot
             var newSlot = new Slot { RoomName = roomName, StartTime = bookingDate, StaffId = iD };
 
+            // SQL to insert the new slot into the DB.
             bool res = ExecuteSql("INSERT INTO [dbo].[Slot] ([RoomID], [StartTime], [StaffID])" +
                     "VALUES(" +
                     $"(SELECT RoomID from [Room] where RoomID = '{newSlot.RoomName}')," +
-                    $"'{newSlot.StartTime.ToString("yyyy-MM-dd HH:mm:ss")}'," +
+                    $"'{newSlot.StartTime.ToString(Model.SQLDateTimeFormat)}'," +
                     $"(SELECT UserID from [User] where UserID = '{newSlot.StaffId}'))");
 
             if(res)
             {
                 Slots.Add(newSlot);
-                return true;
+                return new Result { Success = true };
             }
-            return false;
+            return new Result { Success = false, ErrorMsg = "Unable to execute database request" };
         }
 
-        public bool RemoveSlot(string roomName, DateTime bookingDate)
+        public Result RemoveSlot(string roomName, DateTime bookingDate)
         {
+            // Check that the room exists
+            if(!Rooms.Contains(roomName))
+            {
+                return new Result { Success = false, ErrorMsg = "Room does not exist" };
+            }
+
             // Check if the slot exists
             var slot = FindSlot(roomName, bookingDate);
 
             // If the slot does not exist we cannot remove it
             if(slot == null)
             {
-                return false;
+                return new Result { Success = false, ErrorMsg = "The given slot does not exist" };
             }
 
-            
+            var res = ExecuteSql("DELETE FROM [dbo].[Slot] WHERE " +
+                $"[RoomID] = '{roomName}' AND " +
+                $"[StartTime] = '{bookingDate.ToString(Model.SQLDateTimeFormat)}'");
 
-            //TODO: talk to database and remove a slot if possible
-            return true;
+            // If the SQL execs then remove the slot locally
+            if(res)
+            {
+                Slots.Remove(slot);
+                return new Result { Success = true };
+            }
+
+            return new Result { Success = false, ErrorMsg = "Unable to execute database request" };
         }
 
-        public bool MakeBooking(string roomName, DateTime bookingDate, string iD)
+        public Result MakeBooking(string roomName, DateTime bookingDate, string iD)
         {
             // Check that the room exists
             if(!Rooms.Contains(roomName))
             {
-                return false;
+                return new Result { Success = false, ErrorMsg = "Room does not exist" };
             }
 
             // Check that the id exists
             if(!Users.Any(x => x.Id == iD))
             {
-                return false;
+                return new Result { Success = false, ErrorMsg = "Student does not exist" };
             }
 
             var slot = FindSlot(roomName, bookingDate);
             // Check the slot exists
             if (slot == null)
             {
-                return false;
+                return new Result { Success = false, ErrorMsg = "The given details do not match a slot" };
+            }
+
+            // Check the slot is not already booked
+            if(!string.IsNullOrEmpty(slot.StudentId))
+            {
+                return new Result { Success = false, ErrorMsg = "This slot is already booked" };
             }
                         
             var res = ExecuteSql("UPDATE [dbo].[Slot] SET " +
                 $"[BookedInStudentID] = (SELECT [User].[UserID] FROM [User] WHERE UserID = '{iD}') " +
                 $"WHERE [RoomID] = '{roomName}' AND " +
-                $"[StartTime] = '{bookingDate.ToString("yyyy-MM-dd hh:mm:ss")}'");
+                $"[StartTime] = '{bookingDate.ToString(Model.SQLDateTimeFormat)}'");
 
             // If the sql executes, update the local
             if(res)
             {
                 slot.StudentId = iD;
-                return true;
+                return new Result { Success = true };
             }
-            
-            return false;
+
+            return new Result { Success = false, ErrorMsg = "Unable to execute database request" };
         }
 
-        public bool CancelBooking(string roomName, DateTime bookingDate)
+        public Result CancelBooking(string roomName, DateTime bookingDate)
         {
-            //TODO: talk to database and cancel a booking if possible
-            return true;
+            if(!Rooms.Contains(roomName))
+            {
+                return new Result { Success = false, ErrorMsg = "Room does not exist" };
+            }
+
+            var slot = FindSlot(roomName, bookingDate);
+
+            // Check the slot exists before canceling the student booking
+            if(slot == null)
+            {
+                return new Result { Success = false, ErrorMsg = "Slot does not exist" };
+            }
+
+            var res = ExecuteSql("UPDATE [dbo].[Slot] SET" +
+                "[BookedInStudentID] = null " +
+                $"WHERE [RoomID] = '{roomName}' AND " +
+                $"[StartTime] = '{bookingDate.ToString(Model.SQLDateTimeFormat)}'");
+
+            if(res)
+            {
+                slot.StudentId = null;
+                return new Result { Success = true };
+            }
+
+            return new Result { Success = false, ErrorMsg = "Unable to execute database request" };
         }
     }
 }

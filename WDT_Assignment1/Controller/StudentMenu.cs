@@ -74,17 +74,18 @@ namespace WDT_Assignment1
 
             var id = userInput.GetStudentId();
 
+            // Join the booking date with the time enterd to form a new datetime
             bookingDate = bookingDate.Date + time;
 
-            bool success = model.MakeBooking(roomName, bookingDate, id);
+            var res = model.MakeBooking(roomName, bookingDate, id);
 
-            if (success)
+            if (res.Success)
             {
                 view.ShowPrompt($"Booking in room {roomName} on {bookingDate} at {time} by {id} successfully booked.");
             }
             else
             {
-                view.ShowPrompt("Slot booking failed");
+                view.ShowPrompt($"Slot booking failed: {res.ErrorMsg}");
             }
         }
 
@@ -96,15 +97,18 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
-            bool success = model.CancelBooking(roomName, bookingDate);
+            // Join the booking date with the time enterd to form a new datetime
+            bookingDate = bookingDate.Date + time;
 
-            if (success)
+            var res = model.CancelBooking(roomName, bookingDate);
+
+            if (res.Success)
             {
                 view.ShowPrompt($"Booking in room {roomName} on {bookingDate} at {time} successfully cancelled.");
             }
             else
             {
-                view.ShowPrompt("Could not cancel booking");
+                view.ShowPrompt($"Could not cancel booking: {res.ErrorMsg}");
             }
         }
     }

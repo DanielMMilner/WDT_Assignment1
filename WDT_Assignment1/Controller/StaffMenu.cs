@@ -70,15 +70,15 @@ namespace WDT_Assignment1
 
             var id = userInput.GetStaffId();
 
-            bool success = model.CreateSlot(roomName, bookingDate, id);
+            var res = model.CreateSlot(roomName, bookingDate, id);
 
-            if (success)
+            if (res.Success)
             {
                 view.ShowPrompt($"Slot in room {roomName} on {bookingDate.ToString("dd-MM-yyyy")} at {bookingDate.ToString("hh:mm tt")} with {id} successfully created.");
             }
             else
             {
-                view.ShowPrompt("Failed to create slot");
+                view.ShowPrompt($"Failed to create slot: {res.ErrorMsg}");
             }
         }
 
@@ -93,15 +93,15 @@ namespace WDT_Assignment1
             // Join the booking date with the time enterd to form a new datetime
             bookingDate = bookingDate.Date + time;
             
-            bool success = model.RemoveSlot(roomName, bookingDate);
+            var res = model.RemoveSlot(roomName, bookingDate);
 
-            if (success)
+            if (res.Success)
             {
                 view.ShowPrompt($"Slot in room {roomName} on {bookingDate.ToString("dd-MM-yyyy")} at {bookingDate.ToString("hh:mm tt")} successfully removed.");
             }
             else
             {
-                view.ShowPrompt("Failed to remove slot");
+                view.ShowPrompt($"Failed to remove slot: {res.ErrorMsg}");
             }
         }
     }

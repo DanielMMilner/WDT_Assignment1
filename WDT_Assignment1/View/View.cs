@@ -10,7 +10,7 @@ namespace WDT_Assignment1
 
         public void PrintMenu(string menuName, List<string> menuOptions)
         {
-            Console.WriteLine($"{menuName} Menu:");
+            Console.WriteLine($"\n{menuName} Menu:");
             var optionNum = 1;
             foreach(string option in menuOptions)
             {
