@@ -6,7 +6,7 @@ namespace WDT_Assignment1
 {
     class MainMenu : Menu
     {
-        public MainMenu(Model model, View view, Controller controller) : base(model, view, controller)
+        public MainMenu(View view, Controller controller) : base(view, controller)
         {
             MenuName = "Main";
 
@@ -31,10 +31,10 @@ namespace WDT_Assignment1
                     ListSlots();
                     return false;
                 case "3":   //Staff menu
-                    controller.ChangeCurrentMenu(new StaffMenu(model,view,controller));
+                    controller.ChangeCurrentMenu(new StaffMenu(view,controller));
                     return false;
                 case "4":   //Student menu
-                    controller.ChangeCurrentMenu(new StudentMenu(model, view, controller));
+                    controller.ChangeCurrentMenu(new StudentMenu(view, controller));
                     return false;
                 case "5":   //Exit
                     view.ShowPrompt("Now exiting...");
@@ -47,14 +47,14 @@ namespace WDT_Assignment1
 
         private void ListRooms()
         {
-            view.ListRooms(model.Rooms);
+            view.ListRooms(Model.Instance.Rooms);
         }
 
         private void ListSlots()
         {
             var date = userInput.GetDate();
             
-            view.ListSlots(model.GetSlotsOnDate(date));
+            view.ListSlots(Model.Instance.GetSlotsOnDate(date));
         }
     }
 }

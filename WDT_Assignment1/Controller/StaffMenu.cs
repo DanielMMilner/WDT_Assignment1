@@ -6,7 +6,7 @@ namespace WDT_Assignment1
 {
     class StaffMenu : Menu
     {
-        public StaffMenu(Model model, View view, Controller controller) : base(model, view, controller)
+        public StaffMenu(View view, Controller controller) : base(view, controller)
         {
             MenuName = "Staff";
 
@@ -37,7 +37,7 @@ namespace WDT_Assignment1
                     RemoveSlot();
                     return false;
                 case "5":   //Return to Main Menu
-                    controller.ChangeCurrentMenu(new MainMenu(model, view, controller));
+                    controller.ChangeCurrentMenu(new MainMenu(view, controller));
                     return false;
                 default:
                     view.ErrorMessage("Invalid Input");
@@ -47,14 +47,14 @@ namespace WDT_Assignment1
 
         private void ListStaff()
         {
-            view.ListPeople(true, model.GetStaff());
+            view.ListPeople(true, Model.Instance.GetStaff());
         }
 
         private void RoomAvailability()
         {
             var date = userInput.GetDate();
             
-            view.ListRooms(model.GetAvaliableRooms(date));
+            view.ListRooms(Model.Instance.GetAvaliableRooms(date));
         }
 
         private void CreateSlot()
@@ -70,7 +70,7 @@ namespace WDT_Assignment1
 
             var id = userInput.GetStaffId();
 
-            var res = model.CreateSlot(roomName, bookingDate, id);
+            var res = Model.Instance.CreateSlot(roomName, bookingDate, id);
 
             if (res.Success)
             {
@@ -93,7 +93,7 @@ namespace WDT_Assignment1
             // Join the booking date with the time enterd to form a new datetime
             bookingDate = bookingDate.Date + time;
             
-            var res = model.RemoveSlot(roomName, bookingDate);
+            var res = Model.Instance.RemoveSlot(roomName, bookingDate);
 
             if (res.Success)
             {

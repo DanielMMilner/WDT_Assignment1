@@ -5,21 +5,21 @@ namespace WDT_Assignment1
     class Controller
     {
         private View view;
-        private Model model;
         private bool exit = false;
         private Menu currentMenu;
 
         public Controller()
         {
             view = new View();
-            model = new Model();
 
-            currentMenu = new MainMenu(model, view, this);
+            currentMenu = new MainMenu(view, this);
         }
 
         public void Run()
         {
-            if (!model.LoadDataFromDB())
+            var res = Model.Instance.LoadDataFromDB();
+
+            if (!res)
             {
                 view.ErrorMessage("There was a problem connecting to the database.\n Please check your internet connection and try again.");
             }

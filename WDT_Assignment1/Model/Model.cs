@@ -21,7 +21,25 @@ namespace WDT_Assignment1
         public static string ConnString = "server=wdt2019.australiasoutheast.cloudapp.azure.com;UID=s3542686;PWD=abc123";
         public static string SQLDateTimeFormat = "yyyy-MM-dd hh:mm:ss";
 
-        public Model()
+        private static Model instance;
+
+        private Model() { }
+
+        public static Model Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Model();
+                }
+                return instance;
+            }
+        }
+
+        // Used singleton structure from https://codeburst.io/singleton-design-pattern-implementation-in-c-62a8daf3d115
+
+        public bool LoadDataFromDB()
         {
             // Connect to the sql database and load all tables into memory
             using (var conn = new SqlConnection(Model.ConnString))
@@ -55,16 +73,16 @@ namespace WDT_Assignment1
 
                 foreach (DataRow item in slotData.Tables[0].Rows)
                 {
-                    Slots.Add(new Slot {
+                    Slots.Add(new Slot
+                    {
                         RoomName = item["RoomID"].ToString(),
                         StartTime = DateTime.Parse(item["StartTime"].ToString()),
                         StaffId = item["StaffID"].ToString(),
                         StudentId = item["BookedInStudentID"].ToString()
                     });
                 }
-
-                
             }
+            return true;
         }
 
         private bool ExecuteSql(string str)
@@ -87,12 +105,7 @@ namespace WDT_Assignment1
 
             return false;
         }
-
-        public bool LoadDataFromDB()
-        {
-            return true;
-        }
-
+        
 
         /// <summary>
         /// Find the first slot that matches the given roomname and bookingdate
