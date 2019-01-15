@@ -231,6 +231,12 @@ namespace WDT_Assignment1
                 return new Result { Success = false, ErrorMsg = "Student does not exist" };
             }
 
+            //check if a the student has already made a booking on this day
+            if(Slots.Where(x => x.StartTime.Date == bookingDate.Date && x.StudentId == iD).Any())
+            {
+                return new Result { Success = false, ErrorMsg = "Student has already made a booking on this day" };
+            }
+
             var slot = FindSlot(roomName, bookingDate);
             // Check the slot exists
             if (slot == null)
