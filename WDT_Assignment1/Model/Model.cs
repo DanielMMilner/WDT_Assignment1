@@ -151,6 +151,11 @@ namespace WDT_Assignment1
                 return new Result { Success = false, ErrorMsg = "Room does not exist" };
             }
 
+            if (Slots.Where(x => x.StartTime.Date == bookingDate.Date && x.RoomName == roomName).ToList().Count >= 2)
+            {
+                return new Result { Success = false, ErrorMsg = "A room can be booked for a maximum of 2 slots per day" };
+            }
+
             // Check slot does not already exist
             if (FindSlot(roomName, bookingDate) != null)
             {
