@@ -198,6 +198,11 @@ namespace WDT_Assignment1
                 return new Result { Success = false, ErrorMsg = "The given slot does not exist" };
             }
 
+            if(!String.IsNullOrEmpty(slot.StudentId))
+            {
+                return new Result { Success = false, ErrorMsg = "Cannot remove a slot that a student has booked" };
+            }
+
             var res = ExecuteSql("DELETE FROM [dbo].[Slot] WHERE " +
                 $"[RoomID] = '{roomName}' AND " +
                 $"[StartTime] = '{bookingDate.ToString(Model.SQLDateTimeFormat)}'");
