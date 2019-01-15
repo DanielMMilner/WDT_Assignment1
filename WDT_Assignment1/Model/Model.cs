@@ -148,6 +148,11 @@ namespace WDT_Assignment1
             return Slots.Where(x => x.StaffId == id && !String.IsNullOrEmpty(x.StudentId)).ToList();
         }
 
+        public List<Slot> GetStaffAvailabilty(DateTime date, string id)
+        {
+            return Slots.Where(x => x.StartTime.Date == date.Date && x.StaffId == id && String.IsNullOrEmpty(x.StudentId)).ToList();
+        }
+
         public Result CreateSlot(string roomName, DateTime bookingDate, string iD)
         {
             // Check room is exists.

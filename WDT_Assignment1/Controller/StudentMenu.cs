@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace WDT_Assignment1
@@ -59,7 +58,7 @@ namespace WDT_Assignment1
             view.ShowPrompt($"Staff member {staffId} availability on {date}");
 
             // Get this staff members bookings for the given day
-            var staffBookingTimes = Model.Instance.GetSlotsOnDate(date).Where(x => x.StaffId == staffId).ToList();
+            var staffBookingTimes = Model.Instance.GetStaffAvailabilty(date, staffId);
             
             view.StaffAvailability(staffBookingTimes);
         }
