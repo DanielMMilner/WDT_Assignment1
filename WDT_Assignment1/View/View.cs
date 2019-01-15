@@ -31,11 +31,11 @@ namespace WDT_Assignment1
         public void ListSlots(List<Slot> slots)
         {
             Console.WriteLine("--- List Slots ---");
-            Console.WriteLine("\tRoom name\tStart time\tStaff ID\tStudent ID");
+            Console.WriteLine("\tRoom name\tStart time\t\tStaff ID\tStudent ID");
 
             foreach (Slot slot in slots)
             {
-                Console.WriteLine($"\t{slot.RoomName, -15}\t{slot.StartTime.ToString("hh:mm tt"),-15}\t{slot.StaffId, -15}\t{slot.StudentId,-15}");
+                Console.WriteLine($"\t{slot.RoomName, -15}\t{slot.StartTime.ToString("dd/MM/yyyy hh:mm tt"),-15}\t{slot.StaffId, -15}\t{slot.StudentId,-15}");
             }
         }
 

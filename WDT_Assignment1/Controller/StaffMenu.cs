@@ -13,6 +13,7 @@ namespace WDT_Assignment1
             Options = new List<string>
             {
                 "List staff",
+                "List booked slots",
                 "Room availability",
                 "Create slot",
                 "Remove slot",
@@ -27,22 +28,32 @@ namespace WDT_Assignment1
                 case "1":   //List staff
                     ListStaff();
                     return false;
-                case "2":   //Room availability
+                case "2":   //List booked slots
+                    ListBookedSlots();
+                    return false;
+                case "3":   //Room availability
                     RoomAvailability();
                     return false;
-                case "3":   //Create slot
+                case "4":   //Create slot
                     CreateSlot();
                     return false;
-                case "4":   //Remove slot
+                case "5":   //Remove slot
                     RemoveSlot();
                     return false;
-                case "5":   //Return to Main Menu
+                case "6":   //Return to Main Menu
                     controller.ChangeCurrentMenu(new MainMenu(view, controller));
                     return false;
                 default:
                     view.ErrorMessage("Invalid Input");
                     return false;
             }
+        }
+
+        private void ListBookedSlots()
+        {
+            var id = userInput.GetStaffId();
+
+            view.ListSlots(Model.Instance.GetBookedSlots(id));
         }
 
         private void ListStaff()
