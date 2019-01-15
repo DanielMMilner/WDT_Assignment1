@@ -162,7 +162,12 @@ namespace WDT_Assignment1
             {
                 return new Result { Success = false, ErrorMsg = "Staff member does not exist" };
             }
-            
+
+            if (Slots.Where(x => x.StartTime.Date == bookingDate.Date && x.StaffId == iD).ToList().Count >= 4)
+            {
+                return new Result { Success = false, ErrorMsg = "Staff can be available for a maximum of 4 slots per day" };
+            }
+
             // Create a slot
             var newSlot = new Slot { RoomName = roomName, StartTime = bookingDate, StaffId = iD };
 
