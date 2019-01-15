@@ -19,7 +19,7 @@ namespace WDT_Assignment1
         public List<Slot> Slots { get; private set; }
         
         public static string ConnString = "server=wdt2019.australiasoutheast.cloudapp.azure.com;UID=s3542686;PWD=abc123";
-        public static string SQLDateTimeFormat = "yyyy-MM-dd hh:mm:ss";
+        public static string SQLDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
         private static Model instance;
 
