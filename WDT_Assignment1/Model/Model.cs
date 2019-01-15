@@ -41,46 +41,54 @@ namespace WDT_Assignment1
 
         public bool LoadDataFromDB()
         {
-            // Connect to the sql database and load all tables into memory
-            using (var conn = new SqlConnection(Model.ConnString))
+            try
             {
-                var userAdap = new SqlDataAdapter("SELECT * FROM dbo.[User]", conn);
-                var slotAdap = new SqlDataAdapter("SELECT * FROM dbo.[Slot]", conn);
-                var roomAdap = new SqlDataAdapter("SELECT * FROM dbo.[Room]", conn);
-
-                var userData = new DataSet();
-                var slotData = new DataSet();
-                var roomData = new DataSet();
-
-                userAdap.Fill(userData);
-                slotAdap.Fill(slotData);
-                roomAdap.Fill(roomData);
-
-                Rooms = new List<string>();
-                Users = new List<Person>();
-                Slots = new List<Slot>();
-
-                // Convert the DataSets into normal arrays
-                foreach (DataRow item in userData.Tables[0].Rows)
+                // Connect to the sql database and load all tables into memory
+                using (var conn = new SqlConnection(Model.ConnString))
                 {
-                    Users.Add(new Person { Id = item["UserID"].ToString(), Email = item["Email"].ToString(), Name = item["Name"].ToString() });
-                }
+                    var userAdap = new SqlDataAdapter("SELECT * FROM dbo.[User]", conn);
+                    var slotAdap = new SqlDataAdapter("SELECT * FROM dbo.[Slot]", conn);
+                    var roomAdap = new SqlDataAdapter("SELECT * FROM dbo.[Room]", conn);
 
-                foreach (DataRow item in roomData.Tables[0].Rows)
-                {
-                    Rooms.Add(item["RoomID"].ToString());
-                }
+                    var userData = new DataSet();
+                    var slotData = new DataSet();
+                    var roomData = new DataSet();
 
-                foreach (DataRow item in slotData.Tables[0].Rows)
-                {
-                    Slots.Add(new Slot
+                    userAdap.Fill(userData);
+                    slotAdap.Fill(slotData);
+                    roomAdap.Fill(roomData);
+
+                    Rooms = new List<string>();
+                    Users = new List<Person>();
+                    Slots = new List<Slot>();
+
+                    // Convert the DataSets into normal arrays
+                    foreach (DataRow item in userData.Tables[0].Rows)
                     {
-                        RoomName = item["RoomID"].ToString(),
-                        StartTime = DateTime.Parse(item["StartTime"].ToString()),
-                        StaffId = item["StaffID"].ToString(),
-                        StudentId = item["BookedInStudentID"].ToString()
-                    });
+                        Users.Add(new Person { Id = item["UserID"].ToString(), Email = item["Email"].ToString(), Name = item["Name"].ToString() });
+                    }
+
+                    foreach (DataRow item in roomData.Tables[0].Rows)
+                    {
+                        Rooms.Add(item["RoomID"].ToString());
+                    }
+
+                    foreach (DataRow item in slotData.Tables[0].Rows)
+                    {
+                        Slots.Add(new Slot
+                        {
+                            RoomName = item["RoomID"].ToString(),
+                            StartTime = DateTime.Parse(item["StartTime"].ToString()),
+                            StaffId = item["StaffID"].ToString(),
+                            StudentId = item["BookedInStudentID"].ToString()
+                        });
+                    }
                 }
+            }
+            catch
+            {
+                // If an error occurs return false
+                return false;
             }
             return true;
         }
@@ -88,19 +96,26 @@ namespace WDT_Assignment1
         private bool ExecuteSql(string str)
         {
             var rowsAffect = 0;
-            using (var conn = new SqlConnection(Model.ConnString))
+            try
             {
-                conn.Open();
+                using (var conn = new SqlConnection(Model.ConnString))
+                {
+                    conn.Open();
+                    
+                    var cmd = new SqlCommand(str, conn);
 
-                var cmd = new SqlCommand(str, conn);
+                    rowsAffect = cmd.ExecuteNonQuery();
+                }
 
-                rowsAffect = cmd.ExecuteNonQuery();
+                // Check that the query actually did anything.
+                if (rowsAffect != 0)
+                {
+                    return true;
+                }
             }
-
-            // Check that the query actually did anything.
-            if (rowsAffect != 0)
+            catch
             {
-                return true;
+                // Catches any exceptions and continues, function then returns false.
             }
 
             return false;

@@ -56,7 +56,7 @@ namespace WDT_Assignment1
 
         private void ListStaff()
         {
-            view.ListPeople(true, Model.Instance.GetStaff());
+            view.ListPeople(Model.Instance.GetStaff());
         }
 
         private void RoomAvailability()

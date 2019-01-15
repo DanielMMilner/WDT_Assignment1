@@ -46,7 +46,7 @@ namespace WDT_Assignment1
 
         private void ListStudents()
         {
-            view.ListPeople(false, Model.Instance.GetStudents());
+            view.ListPeople(Model.Instance.GetStudents());
         }
 
         private void StaffAvailability()

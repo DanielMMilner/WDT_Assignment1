@@ -43,9 +43,8 @@ namespace WDT_Assignment1
             Console.WriteLine(prompt);
         }
 
-        public void ListPeople(bool isStaff, List<Person> people)
+        public void ListPeople(List<Person> people)
         {
-            //TODO: Fix formatting
             Console.WriteLine("--- List Staff ---");
             Console.WriteLine("\tID\t\tName\t\tEmail");
             foreach(Person p in people)

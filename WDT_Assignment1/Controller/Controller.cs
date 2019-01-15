@@ -17,11 +17,14 @@ namespace WDT_Assignment1
 
         public void Run()
         {
+            view.ShowPrompt("Loading data from DB");
+
             var res = Model.Instance.LoadDataFromDB();
 
             if (!res)
             {
-                view.ErrorMessage("There was a problem connecting to the database.\n Please check your internet connection and try again.");
+                view.ErrorMessage("There was a problem connecting to the database.\nPlease check your internet connection and try again.");
+                Environment.Exit(0);
             }
 
             while (!exit)
