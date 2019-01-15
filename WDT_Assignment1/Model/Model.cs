@@ -90,18 +90,27 @@ namespace WDT_Assignment1
                 // If an error occurs return false
                 return false;
             }
+
+            // If there was no error return true
             return true;
         }
 
+        /// <summary>
+        /// Executes the given SQL string on the server
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns>If the execution completed</returns>
         private bool ExecuteSql(string str)
         {
             var rowsAffect = 0;
             try
             {
+                // Connect the the server
                 using (var conn = new SqlConnection(Model.ConnString))
                 {
                     conn.Open();
                     
+                    // Create and execute the command
                     var cmd = new SqlCommand(str, conn);
 
                     rowsAffect = cmd.ExecuteNonQuery();
@@ -160,14 +169,21 @@ namespace WDT_Assignment1
 
         public List<Slot> GetBookedSlots(string id)
         {
-            return Slots.Where(x => x.StaffId == id && !String.IsNullOrEmpty(x.StudentId)).ToList();
+            return Slots.Where(x => x.StaffId == id && !string.IsNullOrEmpty(x.StudentId)).ToList();
         }
 
         public List<Slot> GetStaffAvailabilty(DateTime date, string id)
         {
-            return Slots.Where(x => x.StartTime.Date == date.Date && x.StaffId == id && String.IsNullOrEmpty(x.StudentId)).ToList();
+            return Slots.Where(x => x.StartTime.Date == date.Date && x.StaffId == id && string.IsNullOrEmpty(x.StudentId)).ToList();
         }
 
+        /// <summary>
+        /// Creates a Slot with the given details within the database
+        /// </summary>
+        /// <param name="roomName">Room ID</param>
+        /// <param name="bookingDate">Date to create the slot</param>
+        /// <param name="iD">Id of the booking member</param>
+        /// <returns></returns>
         public Result CreateSlot(string roomName, DateTime bookingDate, string iD)
         {
             // Check room is exists.
@@ -188,7 +204,7 @@ namespace WDT_Assignment1
             }
             
             // Check id exists
-            if (!Users.Any(x => x.Id == iD))
+            if (!GetStaff().Any(x => x.Id == iD))
             {
                 return new Result { Success = false, ErrorMsg = "Staff member does not exist" };
             }
@@ -216,6 +232,12 @@ namespace WDT_Assignment1
             return new Result { Success = false, ErrorMsg = "Unable to execute database request" };
         }
 
+        /// <summary>
+        /// Removes a slot from the database with the given roomname and bookingdate
+        /// </summary>
+        /// <param name="roomName"></param>
+        /// <param name="bookingDate"></param>
+        /// <returns></returns>
         public Result RemoveSlot(string roomName, DateTime bookingDate)
         {
             // Check that the room exists
@@ -252,6 +274,13 @@ namespace WDT_Assignment1
             return new Result { Success = false, ErrorMsg = "Unable to execute database request" };
         }
 
+        /// <summary>
+        /// Makes a booking on a valid slot
+        /// </summary>
+        /// <param name="roomName"></param>
+        /// <param name="bookingDate"></param>
+        /// <param name="iD"></param>
+        /// <returns></returns>
         public Result MakeBooking(string roomName, DateTime bookingDate, string iD)
         {
             // Check that the room exists
@@ -261,7 +290,7 @@ namespace WDT_Assignment1
             }
 
             // Check that the id exists
-            if(!Users.Any(x => x.Id == iD))
+            if(!GetStudents().Any(x => x.Id == iD))
             {
                 return new Result { Success = false, ErrorMsg = "Student does not exist" };
             }
@@ -300,6 +329,12 @@ namespace WDT_Assignment1
             return new Result { Success = false, ErrorMsg = "Unable to execute database request" };
         }
 
+        /// <summary>
+        /// Cancels an existing booking
+        /// </summary>
+        /// <param name="roomName">RoomID</param>
+        /// <param name="bookingDate">Date/time of Booking</param>
+        /// <returns></returns>
         public Result CancelBooking(string roomName, DateTime bookingDate)
         {
             if(!Rooms.Contains(roomName))
