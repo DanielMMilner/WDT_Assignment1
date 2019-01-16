@@ -21,9 +21,9 @@ namespace WDT_Assignment1
 
             var res = Model.Instance.LoadDataFromDB();
 
-            if (!res)
+            if (!res.Success)
             {
-                view.ErrorMessage("There was a problem connecting to the database.\nPlease check your internet connection and try again.");
+                view.ErrorMessage(res.ErrorMsg);
                 Environment.Exit(0);
             }
 

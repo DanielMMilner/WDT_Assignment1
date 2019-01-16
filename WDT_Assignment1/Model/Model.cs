@@ -20,8 +20,8 @@ namespace WDT_Assignment1
         public List<Slot> Slots { get; private set; }
         public static string SQLDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        private static IConfigurationRoot Configuration { get; } = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        private static string ConnectionString { get; } = Configuration["ConnectionString"];
+        private static IConfigurationRoot Configuration { get; set; }
+        private static string ConnectionString { get; set; }
         private static Model instance;
 
         private Model() { }
@@ -40,12 +40,23 @@ namespace WDT_Assignment1
 
         // Used singleton structure from https://codeburst.io/singleton-design-pattern-implementation-in-c-62a8daf3d115
 
-        public bool LoadDataFromDB()
+        public Result LoadDataFromDB()
         {
             try
             {
+                Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+                ConnectionString = Configuration["ConnectionString"];
+            }
+            catch
+            {
+                //configuration failed. Most likely due to there being no appsettings.json file.
+                return new Result { Success = false, ErrorMsg = "Could not find appsettings.json file" };
+            }
+
+            try
+            {
                 // Connect to the sql database and load all tables into memory
-                using (var conn = new SqlConnection(Model.ConnectionString))
+                using (var conn = new SqlConnection(ConnectionString))
                 {
                     var userAdap = new SqlDataAdapter("SELECT * FROM dbo.[User]", conn);
                     var slotAdap = new SqlDataAdapter("SELECT * FROM dbo.[Slot]", conn);
@@ -89,11 +100,11 @@ namespace WDT_Assignment1
             catch
             {
                 // If an error occurs return false
-                return false;
+                return new Result { Success = false, ErrorMsg = "There was a problem connecting to the database.\nPlease check your internet connection and try again." };
             }
 
             // If there was no error return true
-            return true;
+            return new Result { Success = true };
         }
 
         /// <summary>
@@ -107,7 +118,7 @@ namespace WDT_Assignment1
             try
             {
                 // Connect the the server
-                using (var conn = new SqlConnection(Model.ConnectionString))
+                using (var conn = new SqlConnection(ConnectionString))
                 {
                     conn.Open();
                     
@@ -118,17 +129,13 @@ namespace WDT_Assignment1
                 }
 
                 // Check that the query actually did anything.
-                if (rowsAffect != 0)
-                {
-                    return true;
-                }
+                return rowsAffect != 0;
             }
             catch
             {
                 // Catches any exceptions and continues, function then returns false.
+                return false;
             }
-
-            return false;
         }
         
 

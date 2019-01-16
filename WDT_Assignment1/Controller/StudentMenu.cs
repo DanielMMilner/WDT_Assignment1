@@ -96,7 +96,7 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
-            // Join the booking date with the time enterd to form a new datetime
+            // Join the booking date with the time entered to form a new datetime
             bookingDate = bookingDate.Date + time;
 
             var res = Model.Instance.CancelBooking(roomName, bookingDate);

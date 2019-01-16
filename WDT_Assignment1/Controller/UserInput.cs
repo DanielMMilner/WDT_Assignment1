@@ -21,7 +21,7 @@ namespace WDT_Assignment1
 
             while (!GetInput(rx))
             {
-                view.ShowPrompt("Invalid date format. Dates much be in the format dd-mm-yyyy");
+                view.ShowPrompt("Invalid date format. Dates must valid and in the format dd-mm-yyyy");
                 view.ShowPrompt("Enter a date:");
             }
 
@@ -33,11 +33,11 @@ namespace WDT_Assignment1
             Regex rx = new Regex(@"^(09|1[0-4]):00$");
 
             view.ShowPrompt("Note: Bookings can only be made at the start of the hour and during school working hours: 09:00-14:00");
-            view.ShowPrompt("Enter time in format (hh:mm):");
+            view.ShowPrompt("Enter time in 24-hour format (hh:mm):");
 
             while (!GetInput(rx))
             {
-                view.ShowPrompt("Invalid time format. Time must be in the format hh:mm and must be made at the top of the hour");
+                view.ShowPrompt("Invalid time format. Time must be in 24-hour format hh:mm and must be made at the top of the hour");
                 view.ShowPrompt("Enter a time:");
             }
 
