@@ -149,7 +149,14 @@ namespace WDT_Assignment1
 
         public List<string> GetAvaliableRooms(DateTime date)
         {
-            return Rooms.Except(GetSlotsOnDate(date).Select(x => x.RoomName)).ToList();
+            //Find all rooms that have a slot on the specific date.
+            var roomsWithSlots = GetSlotsOnDate(date).Select(x => x.RoomName);
+
+            //Find the rooms which have been booked twice, which is the maximum number of bookings allowed.
+            var roomsWithMultipleSlots = roomsWithSlots.Where(x => GetSlotsOnDate(date).Count(y => y.RoomName == x) >= 2);
+
+            //Return the rooms which do not have the max number of bookings.
+            return Rooms.Except(roomsWithMultipleSlots).ToList();      
         }
 
         public List<Person> GetStaff()
@@ -192,7 +199,7 @@ namespace WDT_Assignment1
                 return new Result { Success = false, ErrorMsg = "Room does not exist" };
             }
 
-            if (Slots.Where(x => x.StartTime.Date == bookingDate.Date && x.RoomName == roomName).ToList().Count >= 2)
+            if (Slots.Count(x => x.StartTime.Date == bookingDate.Date && x.RoomName == roomName) >= 2)
             {
                 return new Result { Success = false, ErrorMsg = "A room can be booked for a maximum of 2 slots per day" };
             }
@@ -209,7 +216,7 @@ namespace WDT_Assignment1
                 return new Result { Success = false, ErrorMsg = "Staff member does not exist" };
             }
 
-            if (Slots.Where(x => x.StartTime.Date == bookingDate.Date && x.StaffId == iD).ToList().Count >= 4)
+            if (Slots.Count(x => x.StartTime.Date == bookingDate.Date && x.StaffId == iD) >= 4)
             {
                 return new Result { Success = false, ErrorMsg = "Staff can be available for a maximum of 4 slots per day" };
             }
