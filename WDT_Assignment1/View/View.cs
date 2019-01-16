@@ -45,11 +45,29 @@ namespace WDT_Assignment1
 
         public void ListPeople(List<Person> people)
         {
-            Console.WriteLine("--- List Staff ---");
+            if(people.Count > 0)
+            {
+                if (people[0].IsStaff)
+                {
+                    Console.WriteLine("--- List Staff ---");
+                }
+                else
+                {
+                    Console.WriteLine("--- List Students ---");
+                }
+            }
+
             Console.WriteLine("\tID\t\tName\t\tEmail");
             foreach(Person p in people)
             {
-                Console.WriteLine($"\t{p.Id}\t\t{p.Name}\t\t{p.Email}");
+                if (p.IsStaff)
+                {
+                    Console.WriteLine($"\t{p.Id}\t\t{p.Name}\t\t{p.Email}");
+                }
+                else
+                {
+                    Console.WriteLine($"\t{p.Id}\t{p.Name}\t\t{p.Email}");
+                }
             }
         }
 
