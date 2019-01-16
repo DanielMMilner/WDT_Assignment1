@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace WDT_Assignment1
 {
@@ -17,10 +18,10 @@ namespace WDT_Assignment1
         public List<string> Rooms { get; private set; }
         public List<Person> Users { get; private set; }
         public List<Slot> Slots { get; private set; }
-        
-        public static string ConnString = "server=wdt2019.australiasoutheast.cloudapp.azure.com;UID=s3542686;PWD=abc123";
         public static string SQLDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
+        private static IConfigurationRoot Configuration { get; } = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        private static string ConnectionString { get; } = Configuration["ConnectionString"];
         private static Model instance;
 
         private Model() { }
@@ -44,7 +45,7 @@ namespace WDT_Assignment1
             try
             {
                 // Connect to the sql database and load all tables into memory
-                using (var conn = new SqlConnection(Model.ConnString))
+                using (var conn = new SqlConnection(Model.ConnectionString))
                 {
                     var userAdap = new SqlDataAdapter("SELECT * FROM dbo.[User]", conn);
                     var slotAdap = new SqlDataAdapter("SELECT * FROM dbo.[Slot]", conn);
@@ -106,7 +107,7 @@ namespace WDT_Assignment1
             try
             {
                 // Connect the the server
-                using (var conn = new SqlConnection(Model.ConnString))
+                using (var conn = new SqlConnection(Model.ConnectionString))
                 {
                     conn.Open();
                     
