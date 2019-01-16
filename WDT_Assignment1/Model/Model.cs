@@ -45,6 +45,12 @@ namespace WDT_Assignment1
             try
             {
                 Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+                // Check that the connection string exists
+                if(string.IsNullOrEmpty(Configuration["ConnectionString"]))
+                {
+                    return new Result { Success = false, ErrorMsg = "Connection string is missing from appsettings.json" };
+                }
+
                 ConnectionString = Configuration["ConnectionString"];
             }
             catch
