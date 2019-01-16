@@ -49,13 +49,13 @@ namespace WDT_Assignment1
             }
             catch
             {
-                //configuration failed. Most likely due to there being no appsettings.json file.
+                // configuration failed. Most likely due to there being no appsettings.json file.
                 return new Result { Success = false, ErrorMsg = "Could not find appsettings.json file" };
             }
 
             try
             {
-                // Connect to the sql database and load all tables into memory
+                // Connect to the sql database and load all tables into memory.
                 using (var conn = new SqlConnection(ConnectionString))
                 {
                     var userAdap = new SqlDataAdapter("SELECT * FROM dbo.[User]", conn);
@@ -74,7 +74,7 @@ namespace WDT_Assignment1
                     Users = new List<Person>();
                     Slots = new List<Slot>();
 
-                    // Convert the DataSets into normal arrays
+                    // Convert the DataSets into normal arrays.
                     foreach (DataRow item in userData.Tables[0].Rows)
                     {
                         Users.Add(new Person { Id = item["UserID"].ToString(), Email = item["Email"].ToString(), Name = item["Name"].ToString() });
@@ -99,16 +99,16 @@ namespace WDT_Assignment1
             }
             catch
             {
-                // If an error occurs return false
+                // If an error occurs return false.
                 return new Result { Success = false, ErrorMsg = "There was a problem connecting to the database.\nPlease check your internet connection and try again." };
             }
 
-            // If there was no error return true
+            // If there was no error return true.
             return new Result { Success = true };
         }
 
         /// <summary>
-        /// Executes the given SQL string on the server
+        /// Executes the given SQL string on the server.
         /// </summary>
         /// <param name="str"></param>
         /// <returns>If the execution completed</returns>
@@ -117,12 +117,12 @@ namespace WDT_Assignment1
             var rowsAffect = 0;
             try
             {
-                // Connect the the server
+                // Connect the the server.
                 using (var conn = new SqlConnection(ConnectionString))
                 {
                     conn.Open();
                     
-                    // Create and execute the command
+                    // Create and execute the command.
                     var cmd = new SqlCommand(str, conn);
 
                     rowsAffect = cmd.ExecuteNonQuery();
@@ -193,7 +193,7 @@ namespace WDT_Assignment1
         }
 
         /// <summary>
-        /// Creates a Slot with the given details within the database
+        /// Creates a Slot with the given details within the database.
         /// </summary>
         /// <param name="roomName">Room ID</param>
         /// <param name="bookingDate">Date to create the slot</param>
@@ -212,13 +212,13 @@ namespace WDT_Assignment1
                 return new Result { Success = false, ErrorMsg = "A room can be booked for a maximum of 2 slots per day" };
             }
 
-            // Check slot does not already exist
+            // Check slot does not already exist.
             if (FindSlot(roomName, bookingDate) != null)
             {
                 return new Result { Success = false, ErrorMsg = "Slot already exists" };
             }
             
-            // Check id exists
+            // Check id exists.
             if (!GetStaff().Any(x => x.Id == iD))
             {
                 return new Result { Success = false, ErrorMsg = "Staff member does not exist" };
@@ -229,7 +229,7 @@ namespace WDT_Assignment1
                 return new Result { Success = false, ErrorMsg = "Staff can be available for a maximum of 4 slots per day" };
             }
 
-            // Create a slot
+            // Create a slot.
             var newSlot = new Slot { RoomName = roomName, StartTime = bookingDate, StaffId = iD };
 
             // SQL to insert the new slot into the DB.
@@ -248,7 +248,7 @@ namespace WDT_Assignment1
         }
 
         /// <summary>
-        /// Removes a slot from the database with the given roomname and bookingdate
+        /// Removes a slot from the database with the given roomname and bookingdate.
         /// </summary>
         /// <param name="roomName"></param>
         /// <param name="bookingDate"></param>
@@ -298,32 +298,32 @@ namespace WDT_Assignment1
         /// <returns></returns>
         public Result MakeBooking(string roomName, DateTime bookingDate, string iD)
         {
-            // Check that the room exists
+            // Check that the room exists.
             if(!Rooms.Contains(roomName))
             {
                 return new Result { Success = false, ErrorMsg = "Room does not exist" };
             }
 
-            // Check that the id exists
+            // Check that the id exists.
             if(!GetStudents().Any(x => x.Id == iD))
             {
                 return new Result { Success = false, ErrorMsg = "Student does not exist" };
             }
 
-            //check if a the student has already made a booking on this day
+            // Check if a the student has already made a booking on this day
             if(Slots.Where(x => x.StartTime.Date == bookingDate.Date && x.StudentId == iD).Any())
             {
                 return new Result { Success = false, ErrorMsg = "Student has already made a booking on this day" };
             }
 
             var slot = FindSlot(roomName, bookingDate);
-            // Check the slot exists
+            // Check the slot exists.
             if (slot == null)
             {
                 return new Result { Success = false, ErrorMsg = "The given details do not match a slot" };
             }
 
-            // Check the slot is not already booked
+            // Check the slot is not already booked.
             if(!string.IsNullOrEmpty(slot.StudentId))
             {
                 return new Result { Success = false, ErrorMsg = "This slot is already booked" };
@@ -333,8 +333,8 @@ namespace WDT_Assignment1
                 $"[BookedInStudentID] = (SELECT [User].[UserID] FROM [User] WHERE UserID = '{iD}') " +
                 $"WHERE [RoomID] = '{roomName}' AND " +
                 $"[StartTime] = '{bookingDate.ToString(Model.SQLDateTimeFormat)}'");
-
-            // If the sql executes, update the local
+            
+            // If the sql executes, update the local.
             if(res)
             {
                 slot.StudentId = iD;
@@ -345,7 +345,7 @@ namespace WDT_Assignment1
         }
 
         /// <summary>
-        /// Cancels an existing booking
+        /// Cancels an existing booking.
         /// </summary>
         /// <param name="roomName">RoomID</param>
         /// <param name="bookingDate">Date/time of Booking</param>
@@ -359,7 +359,7 @@ namespace WDT_Assignment1
 
             var slot = FindSlot(roomName, bookingDate);
 
-            // Check the slot exists before canceling the student booking
+            // Check the slot exists before canceling the student booking.
             if(slot == null)
             {
                 return new Result { Success = false, ErrorMsg = "Slot does not exist" };

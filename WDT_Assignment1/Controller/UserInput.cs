@@ -19,6 +19,7 @@ namespace WDT_Assignment1
 
             view.ShowPrompt("Enter date in format (dd-mm-yyyy):");
 
+            // Continuously asks the user for input until the supply a string that matches the regex.
             while (!GetInput(rx))
             {
                 view.ShowPrompt("Invalid date format. Dates must valid and in the format dd-mm-yyyy");
@@ -88,6 +89,7 @@ namespace WDT_Assignment1
             input = Console.ReadLine();
             matches = rx.Matches(input);
 
+            // Returns true if the input mathces the regex.
             return matches.Count > 0;
         }
     }

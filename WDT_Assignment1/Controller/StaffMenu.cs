@@ -23,22 +23,22 @@ namespace WDT_Assignment1
         {
             switch (input)
             {
-                case "1":   //List staff
+                case "1":   // List staff.
                     ListStaff();
                     return false;
-                case "2":   //List booked slots
+                case "2":   // List booked slots.
                     ListBookedSlots();
                     return false;
-                case "3":   //Room availability
+                case "3":   // Room availability.
                     RoomAvailability();
                     return false;
-                case "4":   //Create slot
+                case "4":   // Create slot.
                     CreateSlot();
                     return false;
-                case "5":   //Remove slot
+                case "5":   // Remove slot.
                     RemoveSlot();
                     return false;
-                case "6":   //Return to Main Menu
+                case "6":   // Return to Main Menu.
                     controller.ChangeCurrentMenu(new MainMenu(view, controller));
                     return false;
                 default:
@@ -74,7 +74,7 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
-            // Join the booking date with the time enterd to form a new datetime
+            // Join the booking date with the time enterd to form a new datetime.
             bookingDate = bookingDate.Date + time;
 
             var id = userInput.GetStaffId();
@@ -99,7 +99,7 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
-            // Join the booking date with the time entered to form a new datetime
+            // Join the booking date with the time entered to form a new datetime.
             bookingDate = bookingDate.Date + time;
             
             var res = Model.Instance.RemoveSlot(roomName, bookingDate);

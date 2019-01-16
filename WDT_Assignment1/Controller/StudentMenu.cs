@@ -23,19 +23,19 @@ namespace WDT_Assignment1
         {
             switch (input)
             {
-                case "1":   //List students
+                case "1":   // List students.
                     ListStudents();
                     return false;
-                case "2":   //Staff availability
+                case "2":   // Staff availability.
                     StaffAvailability();
                     return false;
-                case "3":   //Make booking
+                case "3":   // Make booking.
                     MakeBooking();
                     return false;
-                case "4":   //Cancel booking
+                case "4":   // Cancel booking.
                     CancelBooking();
                     return false;
-                case "5":   //Return to Main Menu
+                case "5":   // Return to Main Menu.
                     controller.ChangeCurrentMenu(new MainMenu(view, controller));
                     return false;
                 default:
@@ -57,7 +57,7 @@ namespace WDT_Assignment1
 
             view.ShowPrompt($"Staff member {staffId} availability on {date}");
 
-            // Get this staff members bookings for the given day
+            // Get this staff members bookings for the given day.
             var staffBookingTimes = Model.Instance.GetStaffAvailabilty(date, staffId);
             
             view.StaffAvailability(staffBookingTimes);
@@ -73,7 +73,7 @@ namespace WDT_Assignment1
 
             var id = userInput.GetStudentId();
 
-            // Join the booking date with the time enterd to form a new datetime
+            // Join the booking date with the time enterd to form a new datetime.
             bookingDate = bookingDate.Date + time;
 
             var res = Model.Instance.MakeBooking(roomName, bookingDate, id);
@@ -96,7 +96,7 @@ namespace WDT_Assignment1
 
             var time = userInput.GetTime();
 
-            // Join the booking date with the time entered to form a new datetime
+            // Join the booking date with the time entered to form a new datetime.
             bookingDate = bookingDate.Date + time;
 
             var res = Model.Instance.CancelBooking(roomName, bookingDate);

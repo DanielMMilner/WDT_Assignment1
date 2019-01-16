@@ -24,11 +24,13 @@ namespace WDT_Assignment1
             if (!res.Success)
             {
                 view.ErrorMessage(res.ErrorMsg);
+                // Exits program if database fails to initialise.
                 Environment.Exit(0);
             }
 
             while (!exit)
             {
+                // Prints current menu and sends users input to that menu for processing.
                 view.PrintMenu(currentMenu.MenuName, currentMenu.Options);
                 var input = Console.ReadLine();
                 exit = currentMenu.ProcessMenu(input);

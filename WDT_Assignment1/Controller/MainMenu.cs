@@ -22,19 +22,19 @@ namespace WDT_Assignment1
         {
             switch (input)
             {
-                case "1":   //List Rooms
+                case "1":   // List Rooms.
                     ListRooms();
                     return false;
-                case "2":   //List Slots
+                case "2":   // List Slots.
                     ListSlots();
                     return false;
-                case "3":   //Staff menu
+                case "3":   // Staff menu.
                     controller.ChangeCurrentMenu(new StaffMenu(view,controller));
                     return false;
-                case "4":   //Student menu
+                case "4":   // Student menu.
                     controller.ChangeCurrentMenu(new StudentMenu(view, controller));
                     return false;
-                case "5":   //Exit
+                case "5":   // Exit.
                     view.ShowPrompt("Now exiting...");
                     return true;
                 default:
